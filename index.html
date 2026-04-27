@@ -1,1 +1,359 @@
+#!/usr/bin/env python3
+"""
+Telegram AI Assistant Bot
+- AI ассистент (OpenAI GPT)
+- Еске салғыш / күнтізбе
+- Файл қабылдау / жіберу
+- Қазақша және Орысша
+"""
+
+import logging
+import os
+import asyncio
+from datetime import datetime
+from openai import AsyncOpenAI
+
+from telegram import (
+    Update, InlineKeyboardButton, InlineKeyboardMarkup,
+    ReplyKeyboardMarkup, KeyboardButton
+)
+from telegram.ext import (
+    Application, CommandHandler, MessageHandler,
+    CallbackQueryHandler, ContextTypes, filters
+)
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+# ==================== КОНФИГУРАЦИЯ ====================
+TELEGRAM_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"   # <-- BotFather-дан алыңыз
+OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"        # <-- OpenAI кілтіңіз
+
+# ======================================================
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
+openai_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
+scheduler = AsyncIOScheduler()
+
+# Пайдаланушы деректері (жай жадта сақталады)
+user_data: dict = {}
+
+# ==================== ТІЛДІ АНЫҚТАУ ====================
+def get_lang(user_id: int) -> str:
+    return user_data.get(user_id, {}).get("lang", "kz")
+
+def t(user_id: int, kz: str, ru: str) -> str:
+    return kz if get_lang(user_id) == "kz" else ru
+
+# ==================== START ====================
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    if uid not in user_data:
+        user_data[uid] = {"lang": "kz", "reminders": [], "history": []}
+
+    keyboard = [
+        [InlineKeyboardButton("🇰🇿 Қазақша", callback_data="lang_kz"),
+         InlineKeyboardButton("🇷🇺 Русский", callback_data="lang_ru")]
+    ]
+    await update.message.reply_text(
+        "👋 Сәлем! / Привет!\n\nТілді таңдаңыз / Выберите язык:",
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
+
+async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    uid = query.from_user.id
+    lang = query.data.split("_")[1]
+
+    if uid not in user_data:
+        user_data[uid] = {"lang": lang, "reminders": [], "history": []}
+    else:
+        user_data[uid]["lang"] = lang
+
+    menu_text = t(uid,
+        "✅ Тіл таңдалды: Қазақша\n\nМен сізге көмектесе аламын:\n🤖 AI сұрақтарға жауап беремін\n📅 Еске салғыш орнатамын\n📁 Файлдарды қабылдаймын\n\nКоманды: /help",
+        "✅ Язык выбран: Русский\n\nЯ могу помочь:\n🤖 Отвечу на вопросы AI\n📅 Установлю напоминания\n📁 Приму файлы\n\nКоманды: /help"
+    )
+    await query.edit_message_text(menu_text, reply_markup=main_menu(uid))
+
+# ==================== МЕНЮ ====================
+def main_menu(uid: int) -> ReplyKeyboardMarkup:
+    buttons = [
+        [t(uid, "🤖 AI Сұрақ", "🤖 AI Вопрос"),
+         t(uid, "📅 Еске салғыш", "📅 Напоминание")],
+        [t(uid, "📁 Файлдар", "📁 Файлы"),
+         t(uid, "⚙️ Тіл / Язык", "⚙️ Язык / Тіл")],
+        [t(uid, "❓ Көмек", "❓ Помощь")]
+    ]
+    return ReplyKeyboardMarkup(buttons, resize_keyboard=True)
+
+# ==================== HELP ====================
+async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    text = t(uid,
+        "📖 *Командалар:*\n\n"
+        "🤖 Кез-келген сұрақ жазыңыз — AI жауап береді\n"
+        "📅 `/remind 10:30 Дәрі ішу` — еске салғыш\n"
+        "📅 `/reminders` — барлық еске салғыштар\n"
+        "📁 Файл жіберіңіз — мен сақтаймын\n"
+        "🔄 `/clear` — сұхбат тарихын тазалау\n"
+        "⚙️ `/lang` — тілді өзгерту",
+        "📖 *Команды:*\n\n"
+        "🤖 Напишите любой вопрос — AI ответит\n"
+        "📅 `/remind 10:30 Принять таблетки` — напоминание\n"
+        "📅 `/reminders` — все напоминания\n"
+        "📁 Отправьте файл — я сохраню\n"
+        "🔄 `/clear` — очистить историю\n"
+        "⚙️ `/lang` — сменить язык"
+    )
+    await update.message.reply_text(text, parse_mode="Markdown")
+
+# ==================== AI ЖАУАП ====================
+async def ai_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    if uid not in user_data:
+        user_data[uid] = {"lang": "kz", "reminders": [], "history": []}
+
+    user_text = update.message.text
+    lang = get_lang(uid)
+
+    # Тарихты жаңарту
+    history = user_data[uid].get("history", [])
+    history.append({"role": "user", "content": user_text})
+
+    # Соңғы 10 хабарды ғана сақтау
+    if len(history) > 20:
+        history = history[-20:]
+    user_data[uid]["history"] = history
+
+    system_prompt = (
+        "Сен жеке ассистентсің. Қазақша және орысша жауап бере аласың. "
+        "Пайдаланушы қандай тілде жазса, сол тілде жауап бер. "
+        "Қысқа, нақты және пайдалы жауаптар бер."
+        if lang == "kz" else
+        "Ты личный ассистент. Отвечай на казахском и русском языках. "
+        "Отвечай на том языке, на котором пишет пользователь. "
+        "Давай краткие, точные и полезные ответы."
+    )
+
+    thinking_msg = await update.message.reply_text(
+        t(uid, "⏳ Жауап жазылуда...", "⏳ Печатаю ответ...")
+    )
+
+    try:
+        response = await openai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "system", "content": system_prompt}] + history,
+            max_tokens=1000
+        )
+        answer = response.choices[0].message.content
+        history.append({"role": "assistant", "content": answer})
+        user_data[uid]["history"] = history
+
+        await thinking_msg.edit_text(answer)
+    except Exception as e:
+        logger.error(f"OpenAI error: {e}")
+        await thinking_msg.edit_text(
+            t(uid, "❌ Қате орын алды. Қайта көріңіз.", "❌ Произошла ошибка. Попробуйте снова.")
+        )
+
+# ==================== ЕСКЕ САЛҒЫШ ====================
+async def set_reminder(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    if uid not in user_data:
+        user_data[uid] = {"lang": "kz", "reminders": [], "history": []}
+
+    args = context.args
+    if len(args) < 2:
+        await update.message.reply_text(
+            t(uid,
+              "📅 Мысал: `/remind 14:30 Дәрі ішу`",
+              "📅 Пример: `/remind 14:30 Принять таблетки`"),
+            parse_mode="Markdown"
+        )
+        return
+
+    time_str = args[0]
+    text = " ".join(args[1:])
+
+    try:
+        hour, minute = map(int, time_str.split(":"))
+        now = datetime.now()
+        remind_time = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+
+        if remind_time <= now:
+            from datetime import timedelta
+            remind_time += timedelta(days=1)
+
+        job_id = f"remind_{uid}_{len(user_data[uid]['reminders'])}"
+        scheduler.add_job(
+            send_reminder,
+            "date",
+            run_date=remind_time,
+            args=[context.application.bot, uid, text],
+            id=job_id
+        )
+
+        user_data[uid]["reminders"].append({
+            "id": job_id,
+            "time": time_str,
+            "text": text,
+            "datetime": remind_time.isoformat()
+        })
+
+        await update.message.reply_text(
+            t(uid,
+              f"✅ Еске салғыш орнатылды!\n⏰ {time_str}\n📝 {text}",
+              f"✅ Напоминание установлено!\n⏰ {time_str}\n📝 {text}")
+        )
+    except ValueError:
+        await update.message.reply_text(
+            t(uid,
+              "❌ Уақыт форматы дұрыс емес. Мысал: `14:30`",
+              "❌ Неверный формат времени. Пример: `14:30`"),
+            parse_mode="Markdown"
+        )
+
+async def send_reminder(bot, uid: int, text: str):
+    try:
+        lang = get_lang(uid)
+        msg = f"⏰ *Еске салғыш!*\n\n{text}" if lang == "kz" else f"⏰ *Напоминание!*\n\n{text}"
+        await bot.send_message(chat_id=uid, text=msg, parse_mode="Markdown")
+    except Exception as e:
+        logger.error(f"Reminder error: {e}")
+
+async def list_reminders(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    if uid not in user_data:
+        user_data[uid] = {"lang": "kz", "reminders": [], "history": []}
+
+    reminders = user_data[uid].get("reminders", [])
+    if not reminders:
+        await update.message.reply_text(
+            t(uid, "📭 Еске салғыш жоқ.", "📭 Напоминаний нет.")
+        )
+        return
+
+    lines = [t(uid, "📅 *Еске салғыштар:*", "📅 *Напоминания:*")]
+    for i, r in enumerate(reminders, 1):
+        lines.append(f"{i}. ⏰ {r['time']} — {r['text']}")
+
+    await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+
+# ==================== ФАЙЛДАР ====================
+async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    message = update.message
+
+    if message.document:
+        file = message.document
+        file_name = file.file_name
+        file_size = file.file_size
+        size_kb = round(file_size / 1024, 1)
+
+        tg_file = await context.bot.get_file(file.file_id)
+        save_path = f"/tmp/{file_name}"
+        await tg_file.download_to_drive(save_path)
+
+        await message.reply_text(
+            t(uid,
+              f"✅ Файл қабылданды!\n📄 {file_name}\n📦 {size_kb} KB\n\nФайлды кері жіберу үшін `/getfile {file_name}` жазыңыз",
+              f"✅ Файл получен!\n📄 {file_name}\n📦 {size_kb} KB\n\nЧтобы получить файл обратно: `/getfile {file_name}`"),
+            parse_mode="Markdown"
+        )
+
+    elif message.photo:
+        photo = message.photo[-1]
+        tg_file = await context.bot.get_file(photo.file_id)
+        save_path = f"/tmp/photo_{photo.file_id}.jpg"
+        await tg_file.download_to_drive(save_path)
+
+        await message.reply_text(
+            t(uid, "🖼 Сурет қабылданды!", "🖼 Фото получено!")
+        )
+
+# ==================== ТАРИХТЫ ТАЗАЛАУ ====================
+async def clear_history(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    if uid in user_data:
+        user_data[uid]["history"] = []
+    await update.message.reply_text(
+        t(uid, "🗑 Сұхбат тарихы тазаланды!", "🗑 История разговора очищена!")
+    )
+
+# ==================== ТІЛ ӨЗГЕРТУ ====================
+async def change_lang(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("🇰🇿 Қазақша", callback_data="lang_kz"),
+         InlineKeyboardButton("🇷🇺 Русский", callback_data="lang_ru")]
+    ]
+    await update.message.reply_text(
+        "Тілді таңдаңыз / Выберите язык:",
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
+
+# ==================== ТЕКСТ ХАБАРЛАР ====================
+async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    text = update.message.text
+
+    # Меню батырмалары
+    menu_triggers = {
+        "🤖 AI Сұрақ": None, "🤖 AI Вопрос": None,
+        "❓ Көмек": help_cmd, "❓ Помощь": help_cmd,
+        "⚙️ Тіл / Язык": change_lang, "⚙️ Язык / Тіл": change_lang,
+    }
+
+    if text in ("📅 Еске салғыш", "📅 Напоминание"):
+        await update.message.reply_text(
+            t(uid,
+              "📅 Еске салғыш орнату:\n`/remind 14:30 Дәрі ішу`\n\nБарлық еске салғыштар: /reminders",
+              "📅 Установить напоминание:\n`/remind 14:30 Принять таблетки`\n\nВсе напоминания: /reminders"),
+            parse_mode="Markdown"
+        )
+    elif text in ("📁 Файлдар", "📁 Файлы"):
+        await update.message.reply_text(
+            t(uid,
+              "📁 Файл жіберіңіз, мен қабылдаймын!\nСурет, документ, кез-келген файл жарайды.",
+              "📁 Отправьте файл, я приму!\nФото, документы, любые файлы подходят.")
+        )
+    elif text in menu_triggers and menu_triggers[text]:
+        await menu_triggers[text](update, context)
+    else:
+        # AI-ға жіберу
+        await ai_response(update, context)
+
+# ==================== MAIN ====================
+def main():
+    app = Application.builder().token(TELEGRAM_TOKEN).build()
+
+    # Командалар
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("help", help_cmd))
+    app.add_handler(CommandHandler("remind", set_reminder))
+    app.add_handler(CommandHandler("reminders", list_reminders))
+    app.add_handler(CommandHandler("clear", clear_history))
+    app.add_handler(CommandHandler("lang", change_lang))
+
+    # Callback
+    app.add_handler(CallbackQueryHandler(set_language, pattern="^lang_"))
+
+    # Файлдар
+    app.add_handler(MessageHandler(filters.Document.ALL | filters.PHOTO, handle_file))
+
+    # Мәтін
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
+
+    # Scheduler іске қосу
+    scheduler.start()
+
+    logger.info("🤖 Бот іске қосылды!")
+    app.run_polling(drop_pending_updates=True)
+
+if __name__ == "__main__":
+    main()
 
