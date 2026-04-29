@@ -1,1158 +1,2432 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DIMASH — Meyramhana</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEDRINK - Тараз - Кәсіптік Кофе</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  :root {
-    --gold: #C9A96E;
-    --gold-light: #E8D5A3;
-    --gold-dark: #8B6914;
-    --dark: #0D0B08;
-    --dark2: #161410;
-    --dark3: #1E1B16;
-    --cream: #F4EFE6;
-    --cream2: #EDE5D5;
-    --text: #2C2416;
-    --muted: #8A7A65;
-  }
+        :root {
+            --primary: #4A90E2;
+            --secondary: #50D4C8;
+            --accent: #FF6B6B;
+            --bg-light: #F0F7FF;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A1A2E;
+            --text-secondary: #6C757D;
+            --border-radius: 18px;
+            --shadow-sm: 0 2px 8px rgba(74, 144, 226, 0.08);
+            --shadow-md: 0 4px 16px rgba(74, 144, 226, 0.12);
+            --shadow-lg: 0 8px 28px rgba(74, 144, 226, 0.16);
+        }
 
-  html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
 
-  body {
-    font-family: 'Montserrat', sans-serif;
-    background: var(--dark);
-    color: var(--cream);
-    overflow-x: hidden;
-    cursor: none;
-  }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #FAFBFC;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-  /* ─── CUSTOM CURSOR ─── */
-  .cursor {
-    position: fixed; pointer-events: none; z-index: 9999;
-    width: 10px; height: 10px;
-    background: var(--gold);
-    border-radius: 50%;
-    transform: translate(-50%,-50%);
-    transition: transform 0.1s;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring {
-    position: fixed; pointer-events: none; z-index: 9998;
-    width: 36px; height: 36px;
-    border: 1px solid rgba(201,169,110,0.6);
-    border-radius: 50%;
-    transform: translate(-50%,-50%);
-    transition: all 0.15s ease;
-  }
-  body:has(a:hover) .cursor-ring,
-  body:has(button:hover) .cursor-ring {
-    width: 56px; height: 56px;
-    border-color: var(--gold);
-  }
+        /* ============ HEADER / NAVIGATION ============ */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+            box-shadow: var(--shadow-sm);
+            padding: 0;
+        }
 
-  /* ─── LOADER ─── */
-  #loader {
-    position: fixed; inset: 0; z-index: 10000;
-    background: var(--dark);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 20px;
-  }
-  .loader-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(40px,8vw,80px);
-    font-style: italic;
-    letter-spacing: 16px;
-    color: var(--gold);
-    opacity: 0;
-    animation: fadeIn 0.8s 0.3s forwards;
-  }
-  .loader-bar {
-    width: 200px; height: 1px;
-    background: rgba(201,169,110,0.2);
-    position: relative; overflow: hidden;
-  }
-  .loader-bar::after {
-    content: '';
-    position: absolute; left: -100%; top: 0;
-    width: 100%; height: 100%;
-    background: var(--gold);
-    animation: loadBar 1.8s 0.5s ease forwards;
-  }
-  @keyframes loadBar { to { left: 0; } }
-  @keyframes fadeIn { to { opacity: 1; } }
-  #loader.done {
-    animation: loaderOut 0.7s 2.4s ease forwards;
-  }
-  @keyframes loaderOut {
-    to { opacity: 0; pointer-events: none; visibility: hidden; }
-  }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
 
-  /* ─── NOISE OVERLAY ─── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: 1;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.35;
-  }
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
 
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-    padding: 0 5vw;
-    height: 72px;
-    display: flex; align-items: center; justify-content: space-between;
-    transition: background 0.4s, backdrop-filter 0.4s;
-  }
-  nav.scrolled {
-    background: rgba(13,11,8,0.9);
-    backdrop-filter: blur(16px);
-    border-bottom: 0.5px solid rgba(201,169,110,0.15);
-  }
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 26px; font-style: italic;
-    letter-spacing: 8px; color: var(--gold);
-    text-decoration: none;
-  }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
-  .nav-links a {
-    color: rgba(244,239,230,0.6);
-    text-decoration: none;
-    font-size: 10px; letter-spacing: 2.5px;
-    text-transform: uppercase;
-    transition: color 0.3s;
-    position: relative;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute; bottom: -4px; left: 0; right: 0;
-    height: 1px; background: var(--gold);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s ease;
-  }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
-  .nav-reserve {
-    background: transparent;
-    border: 1px solid rgba(201,169,110,0.5);
-    color: var(--gold);
-    padding: 10px 24px;
-    font-size: 10px; letter-spacing: 2.5px;
-    text-transform: uppercase;
-    cursor: none;
-    transition: all 0.3s;
-    font-family: 'Montserrat', sans-serif;
-  }
-  .nav-reserve:hover {
-    background: var(--gold);
-    color: var(--dark);
-    border-color: var(--gold);
-    transform: translateY(-1px);
-  }
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; background: none; border: none; padding: 4px; }
-  .hamburger span { width: 28px; height: 1px; background: var(--gold); transition: all 0.3s; }
+        .logo-emoji {
+            font-size: 28px;
+        }
 
-  /* ─── HERO ─── */
-  #hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    padding: 100px 5vw 60px;
-  }
-  .hero-bg {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,169,110,0.08) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,169,110,0.05) 0%, transparent 60%);
-  }
-  .hero-lines {
-    position: absolute; inset: 0; overflow: hidden;
-  }
-  .hero-line-h {
-    position: absolute; left: -10%; right: -10%;
-    height: 0.5px; background: rgba(201,169,110,0.08);
-  }
-  .hero-line-v {
-    position: absolute; top: -10%; bottom: -10%;
-    width: 0.5px; background: rgba(201,169,110,0.06);
-  }
-  .hero-eyebrow {
-    font-size: 9px; letter-spacing: 6px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 24px;
-    opacity: 0; transform: translateY(20px);
-    animation: slideUp 0.8s 2.8s ease forwards;
-  }
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(72px, 14vw, 160px);
-    font-weight: 300; font-style: italic;
-    letter-spacing: 20px; line-height: 0.9;
-    color: var(--cream);
-    opacity: 0; transform: translateY(40px) scale(0.97);
-    animation: heroIn 1.2s 3s cubic-bezier(0.16,1,0.3,1) forwards;
-    position: relative; z-index: 1;
-  }
-  .hero-title .letter-d {
-    color: var(--gold);
-    display: inline-block;
-  }
-  @keyframes heroIn {
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .hero-divider {
-    display: flex; align-items: center; gap: 16px;
-    margin: 28px auto;
-    opacity: 0; animation: fadeIn 0.8s 3.6s forwards;
-    width: 300px;
-  }
-  .hero-divider-line { flex: 1; height: 0.5px; background: rgba(201,169,110,0.4); }
-  .hero-divider-diamond {
-    width: 6px; height: 6px;
-    background: var(--gold);
-    transform: rotate(45deg);
-    flex-shrink: 0;
-  }
-  .hero-sub {
-    font-size: 11px; letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 48px;
-    opacity: 0; animation: fadeIn 0.8s 3.8s forwards;
-  }
-  .hero-btns {
-    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
-    opacity: 0; animation: slideUp 0.8s 4s ease forwards;
-  }
-  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-  .btn-gold {
-    background: var(--gold);
-    color: var(--dark);
-    border: none; padding: 16px 44px;
-    font-size: 10px; letter-spacing: 3px;
-    text-transform: uppercase; cursor: none;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    position: relative; overflow: hidden;
-    transition: transform 0.3s;
-  }
-  .btn-gold::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: rgba(255,255,255,0.2);
-    transform: translateX(-110%) skewX(-20deg);
-    transition: transform 0.5s ease;
-  }
-  .btn-gold:hover::before { transform: translateX(110%) skewX(-20deg); }
-  .btn-gold:hover { transform: translateY(-2px); }
-  .btn-outline2 {
-    background: transparent;
-    color: var(--cream);
-    border: 1px solid rgba(244,239,230,0.25);
-    padding: 16px 44px;
-    font-size: 10px; letter-spacing: 3px;
-    text-transform: uppercase; cursor: none;
-    font-family: 'Montserrat', sans-serif;
-    transition: all 0.3s;
-  }
-  .btn-outline2:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-    transform: translateY(-2px);
-  }
-  .hero-scroll {
-    position: absolute; bottom: 36px; left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    opacity: 0; animation: fadeIn 1s 4.4s forwards;
-  }
-  .hero-scroll span {
-    font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted);
-  }
-  .scroll-line {
-    width: 1px; height: 50px;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-    animation: scrollAnim 2s 4.4s ease-in-out infinite;
-    transform-origin: top;
-  }
-  @keyframes scrollAnim {
-    0% { transform: scaleY(0); opacity: 0; transform-origin: top; }
-    50% { transform: scaleY(1); opacity: 1; transform-origin: top; }
-    51% { transform-origin: bottom; }
-    100% { transform: scaleY(0); opacity: 0; transform-origin: bottom; }
-  }
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
 
-  /* ─── MARQUEE ─── */
-  .marquee-wrap {
-    overflow: hidden;
-    background: var(--gold);
-    padding: 14px 0;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    border-bottom: 1px solid rgba(0,0,0,0.15);
-  }
-  .marquee-track {
-    display: flex; gap: 0;
-    animation: marquee 22s linear infinite;
-    white-space: nowrap;
-  }
-  .marquee-item {
-    display: flex; align-items: center; gap: 20px;
-    padding: 0 28px;
-    font-size: 10px; letter-spacing: 3.5px;
-    text-transform: uppercase; color: var(--dark);
-    font-weight: 500;
-  }
-  .marquee-dot {
-    width: 4px; height: 4px;
-    background: rgba(13,11,8,0.4);
-    border-radius: 50%;
-  }
-  @keyframes marquee { to { transform: translateX(-50%); } }
+        .nav-link {
+            padding: 8px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            background: transparent;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            user-select: none;
+        }
 
-  /* ─── INFO STRIP ─── */
-  .info-strip {
-    background: var(--dark2);
-    border-bottom: 0.5px solid rgba(201,169,110,0.1);
-  }
-  .info-strip-inner {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(4,1fr);
-    border-left: 0.5px solid rgba(201,169,110,0.1);
-  }
-  .info-cell {
-    padding: 28px 32px;
-    border-right: 0.5px solid rgba(201,169,110,0.1);
-    border-bottom: 0.5px solid rgba(201,169,110,0.1);
-    position: relative; overflow: hidden;
-    transition: background 0.4s;
-  }
-  .info-cell::before {
-    content: '';
-    position: absolute; left: 0; top: 0; bottom: 0;
-    width: 2px; background: var(--gold);
-    transform: scaleY(0); transform-origin: bottom;
-    transition: transform 0.4s ease;
-  }
-  .info-cell:hover { background: rgba(201,169,110,0.04); }
-  .info-cell:hover::before { transform: scaleY(1); }
-  .info-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-  .info-value { font-size: 14px; color: var(--cream); font-weight: 300; line-height: 1.5; }
+        .nav-link.active,
+        .nav-link:hover {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+        }
 
-  /* ─── SECTIONS ─── */
-  section { position: relative; z-index: 2; }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-  .section-label {
-    display: flex; align-items: center; gap: 16px;
-    margin-bottom: 20px;
-  }
-  .section-label span {
-    font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold);
-  }
-  .section-label-line { flex: 0 0 40px; height: 0.5px; background: var(--gold); }
+        .lang-toggle {
+            background: #F5F7FB;
+            border: 1.5px solid #E0E6F2;
+            border-radius: 10px;
+            padding: 7px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            user-select: none;
+        }
 
-  /* ─── ABOUT ─── */
-  #about { background: var(--dark); padding: 120px 5vw; }
-  .about-inner {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1.2fr;
-    gap: 80px; align-items: center;
-  }
-  .about-visual {
-    position: relative;
-  }
-  .about-frame {
-    aspect-ratio: 3/4;
-    background: var(--dark3);
-    position: relative; overflow: hidden;
-  }
-  .about-frame-inner {
-    position: absolute; inset: 16px;
-    border: 0.5px solid rgba(201,169,110,0.2);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 12px;
-  }
-  .about-frame-icon {
-    font-size: 80px; opacity: 0.15;
-    filter: grayscale(1);
-  }
-  .about-frame-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 60px; font-style: italic;
-    color: rgba(201,169,110,0.12);
-    letter-spacing: 8px;
-    position: absolute; bottom: 30px; right: 30px;
-    line-height: 1;
-  }
-  .about-corner {
-    position: absolute;
-    width: 40px; height: 40px;
-  }
-  .about-corner.tl { top: -8px; left: -8px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
-  .about-corner.br { bottom: -8px; right: -8px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
-  .about-badge {
-    position: absolute; bottom: -20px; right: -20px;
-    width: 100px; height: 100px;
-    background: var(--gold);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 2px;
-  }
-  .about-badge-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px; color: var(--dark);
-    font-style: italic; line-height: 1;
-  }
-  .about-badge-lbl { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(13,11,8,0.7); }
-  .about-h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 4vw, 52px);
-    font-weight: 300; line-height: 1.2;
-    color: var(--cream); margin-bottom: 24px;
-  }
-  .about-h2 em { font-style: italic; color: var(--gold); }
-  .about-p { font-size: 13px; line-height: 2; color: rgba(244,239,230,0.55); margin-bottom: 16px; font-weight: 300; }
-  .about-stats {
-    display: grid; grid-template-columns: repeat(3,1fr);
-    gap: 0; margin-top: 40px;
-    border-top: 0.5px solid rgba(201,169,110,0.15);
-    border-left: 0.5px solid rgba(201,169,110,0.15);
-  }
-  .astat {
-    padding: 24px 20px;
-    border-right: 0.5px solid rgba(201,169,110,0.15);
-    border-bottom: 0.5px solid rgba(201,169,110,0.15);
-  }
-  .astat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 40px; font-style: italic;
-    color: var(--gold); line-height: 1;
-  }
-  .astat-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+        .lang-toggle.active {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
 
-  /* ─── MENU ─── */
-  #menu { background: var(--dark2); padding: 120px 5vw; }
-  .menu-header {
-    max-width: 1200px; margin: 0 auto 60px;
-    display: flex; align-items: flex-end; justify-content: space-between;
-    flex-wrap: wrap; gap: 24px;
-  }
-  .menu-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(40px, 5vw, 60px);
-    font-weight: 300; color: var(--cream);
-  }
-  .menu-tabs2 { display: flex; gap: 0; }
-  .mtab {
-    padding: 10px 22px;
-    background: none; border: 0.5px solid rgba(201,169,110,0.2);
-    color: var(--muted);
-    font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
-    cursor: none; font-family: 'Montserrat', sans-serif;
-    transition: all 0.3s;
-    margin-left: -0.5px;
-  }
-  .mtab.active, .mtab:hover {
-    background: var(--gold); color: var(--dark);
-    border-color: var(--gold); z-index: 1;
-  }
-  .menu-grid2 {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1px;
-    max-width: 1200px; margin: 0 auto;
-    background: rgba(201,169,110,0.08);
-    border: 0.5px solid rgba(201,169,110,0.08);
-  }
-  .mcard {
-    background: var(--dark2);
-    padding: 36px 32px;
-    position: relative; overflow: hidden;
-    display: flex; flex-direction: column;
-    transition: background 0.4s;
-  }
-  .mcard::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 1px; background: var(--gold);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.5s ease;
-  }
-  .mcard:hover { background: rgba(201,169,110,0.03); }
-  .mcard:hover::before { transform: scaleX(1); }
-  .mcard-emoji { font-size: 36px; margin-bottom: 20px; }
-  .mcard-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-  .mcard-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 400;
-    color: var(--cream); line-height: 1.2;
-  }
-  .mcard-badge2 {
-    background: rgba(201,169,110,0.12);
-    color: var(--gold);
-    font-size: 8px; letter-spacing: 1.5px;
-    padding: 4px 10px; text-transform: uppercase;
-    flex-shrink: 0;
-  }
-  .mcard-desc { font-size: 12px; color: var(--muted); line-height: 1.8; flex: 1; margin-bottom: 24px; font-weight: 300; }
-  .mcard-footer { display: flex; align-items: center; justify-content: space-between; }
-  .mcard-price {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px; font-style: italic;
-    color: var(--gold);
-  }
-  .mcard-price span { font-size: 14px; font-style: normal; }
-  .mcard-add {
-    width: 38px; height: 38px;
-    border: 1px solid rgba(201,169,110,0.3);
-    color: var(--gold);
-    background: none; cursor: none;
-    font-size: 20px; display: flex;
-    align-items: center; justify-content: center;
-    transition: all 0.3s;
-  }
-  .mcard-add:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+        .cart-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
 
-  /* ─── GALLERY ─── */
-  #gallery { background: var(--dark); padding: 120px 5vw; }
-  .gallery-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(40px,5vw,60px); font-weight: 300;
-    color: var(--cream); margin-bottom: 50px;
-    max-width: 1200px; margin-left: auto; margin-right: auto;
-  }
-  .gallery-grid2 {
-    max-width: 1200px; margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(12,1fr);
-    grid-template-rows: 220px 220px;
-    gap: 10px;
-  }
-  .gitem {
-    background: var(--dark3);
-    overflow: hidden; position: relative;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .gitem:nth-child(1) { grid-column: span 5; grid-row: span 2; }
-  .gitem:nth-child(2) { grid-column: span 4; }
-  .gitem:nth-child(3) { grid-column: span 3; }
-  .gitem:nth-child(4) { grid-column: span 3; }
-  .gitem:nth-child(5) { grid-column: span 4; }
-  .gitem-emoji { font-size: 64px; transition: transform 0.5s ease; opacity: 0.5; }
-  .gitem::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: rgba(201,169,110,0);
-    transition: background 0.4s;
-  }
-  .gitem:hover::after { background: rgba(201,169,110,0.08); }
-  .gitem:hover .gitem-emoji { transform: scale(1.1); }
-  .gitem-label {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 20px;
-    background: linear-gradient(transparent, rgba(13,11,8,0.8));
-    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--gold); opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.4s;
-  }
-  .gitem:hover .gitem-label { opacity: 1; transform: translateY(0); }
+        .cart-btn:active {
+            transform: scale(0.92);
+        }
 
-  /* ─── RESERVE ─── */
-  #reserve { background: var(--dark2); padding: 120px 5vw; }
-  .reserve-inner2 {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 100px; align-items: start;
-  }
-  .reserve-left {}
-  .reserve-h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(42px,5vw,64px); font-weight: 300;
-    color: var(--cream); line-height: 1.1;
-    margin-bottom: 24px;
-  }
-  .reserve-h2 em { font-style: italic; color: var(--gold); }
-  .reserve-desc { font-size: 12px; line-height: 2; color: var(--muted); margin-bottom: 48px; }
-  .reserve-contact { display: flex; flex-direction: column; gap: 20px; }
-  .rcontact { display: flex; align-items: center; gap: 16px; }
-  .rcontact-icon {
-    width: 42px; height: 42px;
-    border: 0.5px solid rgba(201,169,110,0.25);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; flex-shrink: 0;
-  }
-  .rcontact-info {}
-  .rcontact-lbl { font-size: 8px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
-  .rcontact-val { font-size: 13px; color: var(--cream); font-weight: 300; }
-  .form2 { display: flex; flex-direction: column; gap: 16px; }
-  .finput {
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 0.5px solid rgba(201,169,110,0.18);
-    color: var(--cream);
-    padding: 16px 20px;
-    font-size: 12px; letter-spacing: 0.5px;
-    font-family: 'Montserrat', sans-serif;
-    outline: none;
-    transition: border-color 0.3s, background 0.3s;
-    appearance: none;
-  }
-  .finput::placeholder { color: rgba(138,122,101,0.6); }
-  .finput:focus {
-    border-color: rgba(201,169,110,0.5);
-    background: rgba(201,169,110,0.03);
-  }
-  .finput option { background: var(--dark2); color: var(--cream); }
-  .form2-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .fbtn {
-    background: var(--gold); color: var(--dark);
-    border: none; padding: 18px;
-    font-size: 10px; letter-spacing: 3px;
-    text-transform: uppercase; cursor: none;
-    font-family: 'Montserrat', sans-serif; font-weight: 500;
-    position: relative; overflow: hidden;
-    transition: transform 0.3s, opacity 0.3s;
-  }
-  .fbtn::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: rgba(255,255,255,0.15);
-    transform: translateX(-110%) skewX(-20deg);
-    transition: transform 0.5s;
-  }
-  .fbtn:hover { transform: translateY(-2px); }
-  .fbtn:hover::before { transform: translateX(110%) skewX(-20deg); }
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E72);
+            color: white;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2.5px solid white;
+            animation: badgePulse 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--dark);
-    border-top: 0.5px solid rgba(201,169,110,0.12);
-    padding: 60px 5vw 40px;
-    position: relative; z-index: 2;
-  }
-  .footer-inner {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
-    gap: 60px; padding-bottom: 48px;
-    border-bottom: 0.5px solid rgba(201,169,110,0.1);
-  }
-  .footer-logo2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 40px; font-style: italic;
-    letter-spacing: 8px; color: var(--gold);
-    margin-bottom: 16px;
-  }
-  .footer-tagline { font-size: 11px; color: var(--muted); line-height: 1.8; max-width: 220px; }
-  .footer-col-title { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-  .footer-links a {
-    color: var(--muted); text-decoration: none;
-    font-size: 12px; font-weight: 300;
-    transition: color 0.3s;
-  }
-  .footer-links a:hover { color: var(--cream); }
-  .footer-bottom {
-    max-width: 1200px; margin: 30px auto 0;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 16px;
-  }
-  .footer-copy { font-size: 10px; color: var(--muted); letter-spacing: 1px; }
-  .socials { display: flex; gap: 12px; }
-  .social {
-    width: 36px; height: 36px;
-    border: 0.5px solid rgba(201,169,110,0.2);
-    color: var(--muted); text-decoration: none;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; letter-spacing: 0;
-    transition: all 0.3s;
-  }
-  .social:hover { border-color: var(--gold); color: var(--gold); }
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+        }
 
-  /* ─── SCROLL REVEAL ─── */
-  .reveal {
-    opacity: 0; transform: translateY(36px);
-    transition: opacity 0.9s ease, transform 0.9s ease;
-  }
-  .reveal.visible {
-    opacity: 1; transform: translateY(0);
-  }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
+        /* ============ PAGE SECTIONS ============ */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
 
-  /* ─── MOBILE ─── */
-  @media (max-width: 768px) {
-    .nav-links, .nav-reserve { display: none; }
-    .hamburger { display: flex; }
-    .info-strip-inner { grid-template-columns: 1fr 1fr; }
-    .about-inner { grid-template-columns: 1fr; gap: 48px; }
-    .about-frame { aspect-ratio: 3/2; }
-    .about-badge { display: none; }
-    .reserve-inner2 { grid-template-columns: 1fr; gap: 48px; }
-    .gallery-grid2 {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto;
-    }
-    .gitem:nth-child(1),
-    .gitem:nth-child(2),
-    .gitem:nth-child(3),
-    .gitem:nth-child(4),
-    .gitem:nth-child(5) {
-      grid-column: span 1;
-      grid-row: span 1;
-      height: 160px;
-    }
-    .footer-inner { grid-template-columns: 1fr 1fr; gap: 36px; }
-    .form2-row { grid-template-columns: 1fr; }
-    .menu-header { flex-direction: column; align-items: flex-start; }
-    .cursor, .cursor-ring { display: none; }
-    body { cursor: auto; }
-    button, a { cursor: pointer; }
-  }
-</style>
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #E8F5F0 100%);
+            padding: 60px 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 3s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .hero-btn {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .hero-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ============ FEATURES SECTION ============ */
+        .features {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(74, 144, 226, 0.06);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ============ PRODUCTS SHOWCASE ============ */
+        .products-showcase {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #E8F5F0 100%);
+            padding: 80px 16px;
+            margin: 80px 0 0 0;
+        }
+
+        .products-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .product-item {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .product-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-emoji {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .product-item h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .product-item p {
+            font-size: 12px;
+            color: #4A90E2;
+            font-weight: 700;
+        }
+
+        /* ============ GAMES SECTION ============ */
+        .games-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 40px;
+        }
+
+        .game-info {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .game-info h3 {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .game-info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        /* ============ MEMORY GAME ============ */
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            border: none;
+            border-radius: 12px;
+            font-size: 36px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .memory-card.flipped {
+            background: white;
+            border: 2px solid #4A90E2;
+        }
+
+        .memory-card.matched {
+            background: linear-gradient(135deg, #25D366, #20BA5E);
+            color: white;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(80, 212, 200, 0.05));
+            border-radius: 12px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .game-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .game-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .game-btn:active {
+            transform: scale(0.96);
+        }
+
+        .game-btn.secondary {
+            background: #F5F7FB;
+            color: #4A90E2;
+            border: 1.5px solid #4A90E2;
+        }
+
+        /* ============ ABOUT SECTION ============ */
+        .about-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-content h2 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .about-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .about-list {
+            list-style: none;
+            margin: 24px 0;
+        }
+
+        .about-list li {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+
+        .about-list li::before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        /* ============ CONTACT SECTION ============ */
+        .contact-section {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #E8F5F0 100%);
+            padding: 80px 16px;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 24px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .contact-card h3 {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .contact-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .contact-form {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ============ INSTAGRAM SECTION ============ */
+        .instagram-section {
+            background: white;
+            padding: 48px 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .instagram-link {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .instagram-link:hover {
+            transform: scale(1.02);
+        }
+
+        .instagram-logo {
+            font-size: 120px;
+            margin-bottom: 24px;
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.3));
+            animation: bounce 3s infinite;
+        }
+
+        .instagram-link h3 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: #667eea;
+        }
+
+        .instagram-link p {
+            font-size: 18px;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 24px;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #E0E6F2;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ============ DELIVERY SECTION ============ */
+        .delivery-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .delivery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .delivery-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(74, 144, 226, 0.06);
+        }
+
+        .delivery-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .delivery-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .delivery-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(80, 212, 200, 0.1));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            margin-bottom: 40px;
+        }
+
+        /* ============ MENU PAGE ============ */
+        .menu-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 16px;
+            padding-bottom: 120px;
+        }
+
+        .categories {
+            padding: 14px 16px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            border-bottom: 1px solid rgba(74, 144, 226, 0.08);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .categories::-webkit-scrollbar {
+            height: 0;
+        }
+
+        .categories-content {
+            display: flex;
+            gap: 8px;
+            padding: 0;
+            min-width: min-content;
+        }
+
+        .category-tab {
+            padding: 10px 16px;
+            background: white;
+            border: 1.5px solid #E8EEF8;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            user-select: none;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 20px 16px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            padding: 12px 12px 12px 14px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(74, 144, 226, 0.06);
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-icon {
+            font-size: 42px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(80, 212, 200, 0.1));
+            border-radius: 12px;
+        }
+
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .product-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .product-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        .product-price {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.12), rgba(80, 212, 200, 0.12));
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #4A90E2;
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            margin-top: 4px;
+        }
+
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 8px;
+        }
+
+        .quantity-display {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-primary);
+            min-width: 24px;
+            text-align: center;
+            background: rgba(74, 144, 226, 0.08);
+            padding: 4px 6px;
+            border-radius: 6px;
+        }
+
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.88);
+        }
+
+        .qty-btn.add {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
+
+        .qty-btn.remove {
+            background: #F5F5F5;
+            color: #FF6B6B;
+        }
+
+        /* ============ CART PANEL ============ */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .cart-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-panel.active {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            padding: 20px 16px;
+            border-bottom: 1px solid #E8EEF8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(80, 212, 200, 0.05));
+        }
+
+        .cart-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            background: #F5F7FB;
+            border: 1.5px solid #E0E6F2;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .close-btn:active {
+            background: #E0E6F2;
+            transform: scale(0.9);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(80, 212, 200, 0.05));
+            border-radius: 14px;
+            margin-bottom: 12px;
+            align-items: center;
+            border: 1px solid rgba(74, 144, 226, 0.08);
+        }
+
+        .cart-item-icon {
+            font-size: 36px;
+            flex-shrink: 0;
+        }
+
+        .cart-item-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cart-item-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .cart-item-qty {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .cart-item-remove {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: 1.5px solid #E8EEF8;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FF6B6B;
+            font-size: 18px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            user-select: none;
+            font-weight: 700;
+        }
+
+        .cart-item-remove:active {
+            background: #FF6B6B;
+            color: white;
+            border-color: #FF6B6B;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .cart-empty-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .cart-footer {
+            padding: 20px 16px;
+            border-top: 1.5px solid #E8EEF8;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.02), rgba(80, 212, 200, 0.02));
+        }
+
+        .cart-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1.5px solid #E8EEF8;
+        }
+
+        .cart-summary-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 700;
+        }
+
+        .cart-summary-value {
+            font-size: 20px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #25D366 0%, #20BA5E 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-md);
+            user-select: none;
+        }
+
+        .whatsapp-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ============ FLOATING BUTTONS ============ */
+        .floating-buttons {
+            position: fixed;
+            bottom: 24px;
+            right: 16px;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            color: white;
+            position: relative;
+            user-select: none;
+        }
+
+        .fab.instagram {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .fab.whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #20BA5E 100%);
+        }
+
+        .fab.cart-floating {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E72 100%);
+            width: 60px;
+            height: 60px;
+            font-size: 28px;
+        }
+
+        .fab-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #FF6B6B;
+            color: white;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2.5px solid white;
+        }
+
+        .fab:active {
+            transform: scale(0.88);
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            color: white;
+            padding: 60px 16px 20px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+            padding-left: 4px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(74, 144, 226, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4A90E2;
+        }
+
+        .social-icon:hover {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(74, 144, 226, 0.2);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ============ CAMERA SECTION ============ */
+        .camera-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .camera-container {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .camera-display {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 24px;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        #cameraVideo {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .watermark {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background: rgba(74, 144, 226, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .camera-btn {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .camera-btn:active {
+            transform: scale(0.96);
+        }
+
+        .camera-btn.primary {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+        }
+
+        .camera-btn.secondary {
+            background: #F5F5F5;
+            color: #FF6B6B;
+            border: 1.5px solid #FF6B6B;
+        }
+
+        .camera-message {
+            min-height: 40px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #25D366;
+            font-weight: 600;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .photo-delete {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(255, 107, 107, 0.9);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-item:hover .photo-delete {
+            opacity: 1;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .memory-game {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                height: 300px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .hero h1 {
+                font-size: 52px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-image {
+                height: 500px;
+            }
+
+            .contact-form {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .products {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+
+            .product-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-lg);
+            }
+
+            .fab:hover {
+                transform: translateY(-4px) scale(1.08);
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-
-<!-- Cursor -->
-<div class="cursor" id="cur"></div>
-<div class="cursor-ring" id="curRing"></div>
-
-<!-- Loader -->
-<div id="loader">
-  <div class="loader-text">Dimash</div>
-  <div class="loader-bar"></div>
-</div>
-
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#" class="nav-logo">Dimash</a>
-  <ul class="nav-links">
-    <li><a href="#about">Біз туралы</a></li>
-    <li><a href="#menu">Мәзір</a></li>
-    <li><a href="#gallery">Галерея</a></li>
-    <li><a href="#reserve">Байланыс</a></li>
-  </ul>
-  <button class="nav-reserve" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'})">Брондау</button>
-  <button class="hamburger" id="hamburger">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-lines">
-    <div class="hero-line-h" style="top:20%"></div>
-    <div class="hero-line-h" style="top:40%"></div>
-    <div class="hero-line-h" style="top:70%"></div>
-    <div class="hero-line-v" style="left:15%"></div>
-    <div class="hero-line-v" style="left:85%"></div>
-  </div>
-  <div class="hero-eyebrow">Тараз қаласы &nbsp;·&nbsp; 2015 жылдан бері &nbsp;·&nbsp; Қазақ дәстүрлі тағамдары</div>
-  <div class="hero-title"><span class="letter-d">D</span>imash</div>
-  <div class="hero-divider">
-    <div class="hero-divider-line"></div>
-    <div class="hero-divider-diamond"></div>
-    <div class="hero-divider-line"></div>
-  </div>
-  <div class="hero-sub">Дәм · Мәдениет · Дастархан</div>
-  <div class="hero-btns">
-    <button class="btn-gold" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Мәзірді көру</button>
-    <button class="btn-outline2" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'})">Үстел брондау</button>
-  </div>
-  <div class="hero-scroll">
-    <span>Төмен</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track" id="marqueeTrack"></div>
-</div>
-
-<!-- INFO STRIP -->
-<div class="info-strip">
-  <div class="info-strip-inner">
-    <div class="info-cell reveal">
-      <div class="info-label">Жұмыс уақыты</div>
-      <div class="info-value">Дүйсенбі — Жексенбі<br>10:00 — 23:00</div>
-    </div>
-    <div class="info-cell reveal reveal-delay-1">
-      <div class="info-label">Мекенжай</div>
-      <div class="info-value">Тараз қаласы<br>Орталық аудан</div>
-    </div>
-    <div class="info-cell reveal reveal-delay-2">
-      <div class="info-label">Телефон</div>
-      <div class="info-value">+7 (726) 200-00-00<br>+7 777 200-00-00</div>
-    </div>
-    <div class="info-cell reveal reveal-delay-3">
-      <div class="info-label">Орын саны</div>
-      <div class="info-value">120 адамға дейін<br>Жеке залдар бар</div>
-    </div>
-  </div>
-</div>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="about-inner">
-    <div class="about-visual reveal">
-      <div class="about-frame">
-        <div class="about-frame-inner">
-          <div class="about-frame-icon">🍽️</div>
-          <div class="about-frame-text">Dimash</div>
+    <!-- HEADER / NAVIGATION -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo" onclick="showPage('home'); return false;">
+                <span class="logo-emoji">☕</span>
+                <span>WEDRINK</span>
+            </a>
+            <ul class="nav-menu">
+                <li><button class="nav-link active" onclick="showPage('home')">Басты</button></li>
+                <li><button class="nav-link" onclick="showPage('menu')">Меню</button></li>
+                <li><button class="nav-link" onclick="showPage('games')">Ойындар</button></li>
+                <li><button class="nav-link" onclick="showPage('camera')">📷 Камера</button></li>
+                <li><button class="nav-link" onclick="showPage('about')">Туралы</button></li>
+                <li><button class="nav-link" onclick="showPage('delivery')">Жеткізу</button></li>
+                <li><button class="nav-link" onclick="showPage('contact')">Байланыс</button></li>
+            </ul>
+            <div class="header-actions">
+                <button class="lang-toggle active" data-lang="kk" onclick="setLanguage('kk')">Қаз</button>
+                <button class="lang-toggle" data-lang="ru" onclick="setLanguage('ru')">Рус</button>
+                <button class="cart-btn" onclick="openCart()">
+                    🛒
+                    <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="about-corner tl"></div>
-      <div class="about-corner br"></div>
-      <div class="about-badge">
-        <div class="about-badge-num">9+</div>
-        <div class="about-badge-lbl">Жыл</div>
-      </div>
+    </header>
+
+    <!-- ============ HOME PAGE ============ -->
+    <div class="page active" id="home-page">
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-emoji">☕</div>
+                <h1 id="hero-title">WEDRINK - Қош келдіңіз!</h1>
+                <p id="hero-subtitle">Біз танымдарың үшін өте дәмді кофе мен ішімдіктер ұсынамыз. Жұмсақ әйнек, таза ауа және жылы атмосфера құ құрамасында сізді көргісім келеді.</p>
+                <button class="hero-btn" onclick="showPage('menu')" id="hero-btn">Менюді қараңыз</button>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="features">
+            <h2 class="section-title" id="features-title">Неге WEDRINK?</h2>
+            <p class="section-subtitle" id="features-subtitle">Біз ең жақсы қызмет пен сапаны ұсынамыз</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3 id="feature1-title">Премиум Сапасы</h3>
+                    <p id="feature1-desc">Ең сапалы құрамдас бөлшектер қолдану</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 id="feature2-title">Тез Қызмет</h3>
+                    <p id="feature2-desc">Бесжаста теңге өйтілген, балалы қызмет</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3 id="feature3-title">Ерекше ұсыныстар</h3>
+                    <p id="feature3-desc">Әрбір апта жаңа үзінді ішімдіктер</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 id="feature4-title">Оңай Тапсырыс</h3>
+                    <p id="feature4-desc">Мобильде тапсырыс беру барлық қалай болады</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTS SHOWCASE -->
+        <section class="products-showcase">
+            <div class="menu-container">
+                <h2 class="section-title" id="popular-title">Танымдалған Өнімдер</h2>
+                <div class="products-grid" id="popularProducts"></div>
+            </div>
+        </section>
     </div>
-    <div>
-      <div class="section-label reveal">
-        <div class="section-label-line"></div>
-        <span>Біз туралы</span>
-      </div>
-      <h2 class="about-h2 reveal reveal-delay-1">Дәстүр мен <em>заманауи</em> дәмнің үйлесімі</h2>
-      <p class="about-p reveal reveal-delay-2">Dimash мейрамханасы — Тараздың жүрегінде орналасқан, қазақтың бай тағамдық дәстүрін заманауи ас пісіру өнерімен ұштастыратын ерекше орын.</p>
-      <p class="about-p reveal reveal-delay-3">Біздің аспаздар жергілікті фермерлерден таңдалған ең жаңа өнімдерді қолданып, әр тамақты шебер қолмен және жүрек жылуымен дайындайды.</p>
-      <div class="about-stats reveal reveal-delay-4">
-        <div class="astat">
-          <div class="astat-num">9+</div>
-          <div class="astat-lbl">Жыл тәжірибе</div>
+
+    <!-- ============ MENU PAGE ============ -->
+    <div class="page" id="menu-page">
+        <div class="categories">
+            <div class="categories-content" id="categoriesContent"></div>
         </div>
-        <div class="astat">
-          <div class="astat-num">80+</div>
-          <div class="astat-lbl">Тағам түрі</div>
+        <div class="menu-container">
+            <div id="productsContainer"></div>
         </div>
-        <div class="astat">
-          <div class="astat-num">4.9</div>
-          <div class="astat-lbl">Орташа рейтинг</div>
+    </div>
+
+    <!-- ============ GAMES PAGE ============ -->
+    <div class="page" id="games-page">
+        <section class="games-section">
+            <h2 class="section-title" id="games-title">🎮 Ойындар</h2>
+            <p class="section-subtitle" id="games-subtitle">Ләззат көтерісіңіз! Забавные игры с кофе 😄</p>
+
+            <div class="game-container">
+                <div class="game-info">
+                    <h3 id="memory-title">🎯 Жұпты Табу Ойыны</h3>
+                    <p id="memory-desc">Барлық жұптарды табыңыз! Найди все пары. Жылдамсыңыз! ⏱️</p>
+                </div>
+
+                <div class="game-stats">
+                    <div class="stat">
+                        <div class="stat-label" id="moves-label">Жүрістер</div>
+                        <div class="stat-value" id="movesCount">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label" id="matched-label">Табылды</div>
+                        <div class="stat-value" id="matchedCount">0/8</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label" id="time-label">Уақыт</div>
+                        <div class="stat-value" id="timeCount">0s</div>
+                    </div>
+                </div>
+
+                <div class="memory-game" id="memoryGame"></div>
+
+                <div class="game-buttons">
+                    <button class="game-btn" id="playBtn" onclick="startMemoryGame()">Ойындарды бастау</button>
+                    <button class="game-btn secondary" onclick="resetMemoryGame()">Қайта бастау</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============ CAMERA PAGE ============ -->
+    <div class="page" id="camera-page">
+        <section class="camera-section">
+            <h2 class="section-title" id="camera-title">📷 WEDRINK КАМЕРАСЫ</h2>
+            <p class="section-subtitle" id="camera-subtitle">Өзіңіз пен сіздің түсімді WEDRINK-те түсіңіз! 📸</p>
+
+            <div class="camera-container">
+                <div class="camera-display">
+                    <video id="video" autoplay playsinline></video>
+                </div>
+
+                <div class="camera-controls">
+                    <button class="camera-btn primary" id="startCameraBtn" onclick="startCamera()">
+                        <span id="start-camera-text">📷 Камераны ашу</span>
+                    </button>
+                    <button class="camera-btn secondary" id="closeCameraBtn" onclick="stopCamera()" style="display: none;">
+                        <span id="close-camera-text">❌ Жабу</span>
+                    </button>
+                </div>
+
+                <div id="cameraMessage" class="camera-message"></div>
+            </div>
+        </section>
+    </div>
+    <div class="page" id="about-page">
+        <section class="about-section">
+            <div class="about-grid">
+                <div class="about-image">🏪</div>
+                <div class="about-content">
+                    <h2 id="about-title">Біз туралы</h2>
+                    <p id="about-desc1">WEDRINK - Тараз қаласында ешкімнің кофе мәденiyetін ұсыну құ құрылған әлеуметтік ғана емес, коммерциялық орын. Бізде өте немәселі кофе, шарттаушы чай және өзге ішімдіктер бар.</p>
+                    <p id="about-desc2">Біздің мақсаты - әрбір ашуға дәмді және сапалы өнім ұсыну. Бізде ең жақсы қызмет берілетін команда бар.</p>
+                    <ul class="about-list">
+                        <li id="about-list1">Таза және әдемі интерьер</li>
+                        <li id="about-list2">Сапалы кофе және шай</li>
+                        <li id="about-list3">Ассоци ешегі команда</li>
+                        <li id="about-list4">Жұрын пәтер атмосфера</li>
+                        <li id="about-list5">Салқын және ыстық ішімдіктер</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============ DELIVERY PAGE ============ -->
+    <div class="page" id="delivery-page">
+        <section class="delivery-section">
+            <h2 class="section-title" id="delivery-title">Жеткізу</h2>
+            <p class="section-subtitle" id="delivery-subtitle">Біз Тараз қаласының барлық аймағында жеткізу ұсынамыз</p>
+            <div class="delivery-image">🚗</div>
+            <div class="delivery-grid">
+                <div class="delivery-card">
+                    <h3 id="delivery-opt1">Тез Жеткізу</h3>
+                    <p id="delivery-desc1">30 минут ішінде тапсырысыңыз жеткізіледі. Таза және сыпайы құдықшы.</p>
+                </div>
+                <div class="delivery-card">
+                    <h3 id="delivery-opt2">Іс Жұмыс</h3>
+                    <p id="delivery-desc2">09:00 - 22:00 аралығында ашық. Өте жүй демеу шеңберінде жеткізу қызмет.</p>
+                </div>
+                <div class="delivery-card">
+                    <h3 id="delivery-opt3">Тұрақты Бағалар</h3>
+                    <p id="delivery-desc3">Барлық бағалар уақтында өзгермейді. Вызыв және онлайндағы үйлестіру арқылы тапсырыс беріңіз.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============ CONTACT PAGE ============ -->
+    <div class="page" id="contact-page">
+        <section class="contact-section">
+            <h2 class="section-title" id="contact-title">Байланыс</h2>
+            <p class="section-subtitle" id="contact-subtitle">Бізге хабарлама жіберіңіз немесе төмөндегі мәліметтерін пайдалан</p>
+            
+            <div class="contact-info">
+                <div class="contact-card">
+                    <div class="contact-icon">📍</div>
+                    <h3 id="contact-addr-title">Адрес</h3>
+                    <p id="contact-addr">Тараз қаласы, Абайлық көшесі, 42</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">📱</div>
+                    <h3 id="contact-whatsapp-title">WhatsApp</h3>
+                    <p id="contact-whatsapp"><a href="https://wa.me/87783772352" style="color: inherit; text-decoration: none;">+7 (778) 377-23-52</a></p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">✉️</div>
+                    <h3 id="contact-email-title">Электрондық пошта</h3>
+                    <p id="contact-email">info@wedrink.kz</p>
+                </div>
+            </div>
+
+            <div class="instagram-section">
+                <a href="https://instagram.com/wedrink.kz" target="_blank" class="instagram-link">
+                    <div class="instagram-logo">📷</div>
+                    <h3 id="instagram-text">WEDRINK-ті Instagram-та іздеңіз</h3>
+                    <p id="instagram-follow">@wedrink.kz</p>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- CART PANEL -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <div class="cart-title" id="cart-title">Сіздің тапсырысыңыз</div>
+            <button class="close-btn" onclick="closeCart()">✕</button>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MENU -->
-<section id="menu">
-  <div class="menu-header">
-    <div>
-      <div class="section-label reveal">
-        <div class="section-label-line"></div>
-        <span>Біздің мәзір</span>
-      </div>
-      <div class="menu-title reveal reveal-delay-1">Таңдаулы тағамдар</div>
-    </div>
-    <div class="menu-tabs2 reveal reveal-delay-2">
-      <button class="mtab active" onclick="filterMenu('all',this)">Барлығы</button>
-      <button class="mtab" onclick="filterMenu('main',this)">Негізгі</button>
-      <button class="mtab" onclick="filterMenu('soup',this)">Сорпалар</button>
-      <button class="mtab" onclick="filterMenu('dessert',this)">Десерт</button>
-    </div>
-  </div>
-  <div class="menu-grid2" id="menuGrid">
-    <div class="mcard reveal" data-cat="main">
-      <div class="mcard-emoji">🥩</div>
-      <div class="mcard-top">
-        <div class="mcard-name">Бешбармақ</div>
-        <div class="mcard-badge2">Бестселлер</div>
-      </div>
-      <div class="mcard-desc">Піскен ет, жұқа жайма кеспе және хош иісті сорпамен дайындалған дәстүрлі қазақ тағамы</div>
-      <div class="mcard-footer">
-        <div class="mcard-price">3 500 <span>₸</span></div>
-        <button class="mcard-add">+</button>
-      </div>
-    </div>
-    <div class="mcard reveal reveal-delay-1" data-cat="main">
-      <div class="mcard-emoji">🍖</div>
-      <div class="mcard-top">
-        <div class="mcard-name">Қуырдақ</div>
-      </div>
-      <div class="mcard-desc">Қуырылған ет, бауыр, жүрек пен картоп қосылған классикалық дәмді тағам</div>
-      <div class="mcard-footer">
-        <div class="mcard-price">2 800 <span>₸</span></div>
-        <button class="mcard-add">+</button>
-      </div>
-    </div>
-    <div class="mcard reveal reveal-delay-2" data-cat="main">
-      <div class="mcard-emoji">🥘</div>
-      <div class="mcard-top">
-        <div class="mcard-name">Палау</div>
-        <div class="mcard-badge2">Жаңа</div>
-      </div>
-      <div class="mcard-desc">Піскен күріш, сәбіз, пияз және хош иісті дәмдеуіштермен дайындалған дәстүрлі палау</div>
-      <div class="mcard-footer">
-        <div class="mcard-price">2 200 <span>₸</span></div>
-        <button class="mcard-add">+</button>
-      </div>
-    </div>
-    <div class="mcard reveal reveal-delay-3" data-cat="soup">
-      <div class="mcard-emoji">🍲</div>
-      <div class="mcard-top">
-        <div class="mcard-name">Сорпа</div>
-      </div>
-      <div class="mcard-desc">Нәрлі қой сорпасы, картоп пен пияз қосылған дәстүрлі қазақ сорпасы</div>
-      <div class="mcard-footer">
-        <div class="mcard-price">1 400 <span>₸</span></div>
-        <button class="mcard-add">+</button>
-      </div>
-    </div>
-    <div class="mcard reveal reveal-delay-4" data-cat="soup">
-      <div class="mcard-emoji">🥣</div>
-      <div class="mcard-top">
-        <div class="mcard-name">Лагман</div>
-        <div class="mcard-badge2">Танымал</div>
-      </div>
-      <div class="mcard-desc">Қолмен созылған кеспе, ет пен көкөніс қосылған хош иісті лагман сорпасы</div>
-      <div class="mcard-footer">
-        <div class="mcard-price">1 800 <span>₸</span></div>
-        <button class="mcard-add">+</button>
-      </div>
-    </div>
-    <div class="mcard reveal" data-cat="dessert">
-      <div class="mcard-emoji">🍮</div>
-      <div class="mcard-top">
-        <div class="mcard-name">Чак-чак</div>
-      </div>
-      <div class="mcard-desc">Балмен қапталған дәстүрлі қазақ тәттісі, шай үстіне арналған ерекше десерт</div>
-      <div class="mcard-footer">
-        <div class="mcard-price">900 <span>₸</span></div>
-        <button class="mcard-add">+</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- GALLERY -->
-<section id="gallery">
-  <div class="gallery-title reveal">
-    <div class="section-label" style="margin-bottom:16px;">
-      <div class="section-label-line"></div>
-      <span>Галерея</span>
-    </div>
-    Мейрамханамыздан суреттер
-  </div>
-  <div class="gallery-grid2">
-    <div class="gitem reveal"><div class="gitem-emoji">🍽️</div><div class="gitem-label">Дастархан</div></div>
-    <div class="gitem reveal reveal-delay-1"><div class="gitem-emoji">🥩</div><div class="gitem-label">Бешбармақ</div></div>
-    <div class="gitem reveal reveal-delay-2"><div class="gitem-emoji">🎶</div><div class="gitem-label">Кеш</div></div>
-    <div class="gitem reveal reveal-delay-3"><div class="gitem-emoji">🕯️</div><div class="gitem-label">Атмосфера</div></div>
-    <div class="gitem reveal reveal-delay-4"><div class="gitem-emoji">🌿</div><div class="gitem-label">Бизнес кеш</div></div>
-  </div>
-</section>
-
-<!-- RESERVE -->
-<section id="reserve">
-  <div class="reserve-inner2">
-    <div>
-      <div class="section-label reveal">
-        <div class="section-label-line"></div>
-        <span>Үстел брондау</span>
-      </div>
-      <h2 class="reserve-h2 reveal reveal-delay-1">Ерекше кешке <em>қош келдіңіз</em></h2>
-      <p class="reserve-desc reveal reveal-delay-2">Алдын ала орын брондап, жақын адамдарыңызбен бірге ерекше кешті тамашалаңыз. Біз сізді күтіп жатырмыз.</p>
-      <div class="reserve-contact">
-        <div class="rcontact reveal reveal-delay-3">
-          <div class="rcontact-icon">📍</div>
-          <div class="rcontact-info">
-            <div class="rcontact-lbl">Мекенжай</div>
-            <div class="rcontact-val">Тараз қаласы, Орталық аудан</div>
-          </div>
+        <div class="cart-items" id="cartItemsContainer"></div>
+        <div class="cart-footer">
+            <div class="cart-summary">
+                <span class="cart-summary-label" id="total-label">Барлығы</span>
+                <span class="cart-summary-value" id="cartTotal">0₸</span>
+            </div>
+            <button class="whatsapp-btn" id="whatsappBtn" onclick="generateWhatsappMessage()">
+                <span>💬</span>
+                <span id="whatsapp-btn-text">WhatsApp арқылы тапсыру</span>
+            </button>
         </div>
-        <div class="rcontact reveal reveal-delay-4">
-          <div class="rcontact-icon">📞</div>
-          <div class="rcontact-info">
-            <div class="rcontact-lbl">Телефон</div>
-            <div class="rcontact-val">+7 (726) 200-00-00</div>
-          </div>
+    </div>
+
+    <!-- FLOATING BUTTONS -->
+    <div class="floating-buttons">
+        <button class="fab instagram" onclick="showPage('camera')" title="Camera">📷</button>
+        <button class="fab cart-floating" onclick="openCart()">
+            🛒
+            <span class="fab-badge" id="cartFloatingBadge" style="display: none;">0</span>
+        </button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">☕ WEDRINK</div>
+                <p class="footer-desc" id="footer-desc">Тараз қаласында өте дәмді кофе мен ішімдіктер ұсынамыз.</p>
+                <div class="social-icons">
+                    <a href="https://instagram.com/wedrink.kz" class="social-icon" target="_blank">📷</a>
+                    <a href="https://facebook.com" class="social-icon" target="_blank">f</a>
+                    <a href="https://wa.me/87783772352" class="social-icon" target="_blank">💬</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3 id="footer-menu">МЕНЮ</h3>
+                <ul>
+                    <li><a href="#" onclick="showPage('menu'); return false;" id="footer-menu-link">Барлық ішімдіктер</a></li>
+                    <li><a href="#" id="footer-coffee-link">Кофе</a></li>
+                    <li><a href="#" id="footer-tea-link">Шәй</a></li>
+                    <li><a href="#" id="footer-milkshake-link">Милкшейк</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 id="footer-company">КОМПАНИЯ</h3>
+                <ul>
+                    <li><a href="#" onclick="showPage('about'); return false;" id="footer-about-link">Туралы</a></li>
+                    <li><a href="#" onclick="showPage('delivery'); return false;" id="footer-delivery-link">Жеткізу</a></li>
+                    <li><a href="#" id="footer-blog-link">Блог</a></li>
+                    <li><a href="#" id="footer-careers-link">Карьера</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 id="footer-contact">БАЙЛАНЫС</h3>
+                <ul>
+                    <li><a href="https://wa.me/87783772352" id="footer-whatsapp">+7 (778) 377-23-52 (WhatsApp)</a></li>
+                    <li><a href="mailto:info@wedrink.kz" id="footer-email">info@wedrink.kz</a></li>
+                    <li><a href="#" id="footer-address">Абайлық К., 42</a></li>
+                    <li><a href="#" onclick="showPage('contact'); return false;" id="footer-contact-form">Байланыс форма</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="rcontact reveal">
-          <div class="rcontact-icon">✉️</div>
-          <div class="rcontact-info">
-            <div class="rcontact-lbl">Email</div>
-            <div class="rcontact-val">info@dimash.kz</div>
-          </div>
+        <div class="footer-bottom" id="footer-bottom">
+            © 2024 WEDRINK Taraz. Барлық құқықтар қорғалған.
         </div>
-      </div>
-    </div>
-    <div class="form2 reveal reveal-delay-2">
-      <input type="text" class="finput" placeholder="Аты-жөніңіз" />
-      <input type="tel" class="finput" placeholder="Телефон нөміріңіз" />
-      <div class="form2-row">
-        <input type="date" class="finput" />
-        <select class="finput">
-          <option value="">Уақыт</option>
-          <option>12:00</option><option>13:00</option><option>14:00</option>
-          <option>18:00</option><option>19:00</option><option>20:00</option>
-          <option>21:00</option><option>22:00</option>
-        </select>
-      </div>
-      <select class="finput">
-        <option value="">Адам саны</option>
-        <option>1–2 адам</option>
-        <option>3–4 адам</option>
-        <option>5–6 адам</option>
-        <option>7–10 адам</option>
-        <option>10+ адам</option>
-      </select>
-      <textarea class="finput" rows="3" placeholder="Ерекше тілектер (міндетті емес)..." style="resize:none;"></textarea>
-      <button class="fbtn" onclick="handleBook()">Брондауды растау</button>
-    </div>
-  </div>
-</section>
+    </footer>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-logo2">Dimash</div>
-      <div class="footer-tagline">Дәстүрлі қазақ тағамдары мен заманауи дәмнің ерекше үйлесімі. Тараздың жүрегінде.</div>
-    </div>
-    <div>
-      <div class="footer-col-title">Навигация</div>
-      <ul class="footer-links">
-        <li><a href="#about">Біз туралы</a></li>
-        <li><a href="#menu">Мәзір</a></li>
-        <li><a href="#gallery">Галерея</a></li>
-        <li><a href="#reserve">Брондау</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Байланыс</div>
-      <ul class="footer-links">
-        <li><a href="#">+7 (726) 200-00-00</a></li>
-        <li><a href="#">info@dimash.kz</a></li>
-        <li><a href="#">Тараз, Орталық</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Жұмыс уақыты</div>
-      <ul class="footer-links">
-        <li><a href="#">Дүйсенбі — Жұма</a></li>
-        <li><a href="#">10:00 — 23:00</a></li>
-        <li><a href="#">Сенбі — Жексенбі</a></li>
-        <li><a href="#">10:00 — 00:00</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© 2025 Dimash Restaurant. Барлық құқықтар қорғалған.</div>
-    <div class="socials">
-      <a class="social" href="#">ig</a>
-      <a class="social" href="#">fb</a>
-      <a class="social" href="#">tk</a>
-    </div>
-  </div>
-</footer>
+    <script>
+        // ============ MEMORY GAME STATE ============
+        let gameEmojis = ['☕', '🧋', '🍵', '🥤', '🍦', '🍰', '🍪', '🥐'];
+        let gameCards = [];
+        let flipped = [];
+        let matched = [];
+        let moves = 0;
+        let gameStarted = false;
+        let gameTime = 0;
+        let gameTimer = null;
 
-<script>
-  /* LOADER */
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('done');
-  }, 100);
+        function initMemoryGame() {
+            gameCards = [...gameEmojis, ...gameEmojis];
+            gameCards = gameCards.sort(() => Math.random() - 0.5);
+            renderMemoryCards();
+        }
 
-  /* CURSOR */
-  const cur = document.getElementById('cur');
-  const curRing = document.getElementById('curRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cur.style.left = mx + 'px';
-    cur.style.top = my + 'px';
-  });
-  (function animRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    curRing.style.left = rx + 'px';
-    curRing.style.top = ry + 'px';
-    requestAnimationFrame(animRing);
-  })();
+        function renderMemoryCards() {
+            const gameBoard = document.getElementById('memoryGame');
+            gameBoard.innerHTML = gameCards.map((emoji, idx) => `
+                <button class="memory-card ${matched.includes(idx) ? 'matched' : ''} ${flipped.includes(idx) ? 'flipped' : ''}" 
+                        onclick="flipCard(${idx})">
+                    ${flipped.includes(idx) || matched.includes(idx) ? emoji : '?'}
+                </button>
+            `).join('');
+        }
 
-  /* NAV SCROLL */
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 60);
-  });
+        function flipCard(idx) {
+            if (!gameStarted || flipped.includes(idx) || matched.includes(idx) || flipped.length >= 2) return;
+            
+            flipped.push(idx);
+            moves++;
+            renderMemoryCards();
 
-  /* MARQUEE */
-  const items = ['Бешбармақ', 'Қуырдақ', 'Палау', 'Лагман', 'Сорпа', 'Нан', 'Шәй дастарханы', 'Балмен чак-чак'];
-  const track = document.getElementById('marqueeTrack');
-  let html = '';
-  for (let i = 0; i < 3; i++) {
-    items.forEach(item => {
-      html += `<div class="marquee-item"><span>${item}</span><div class="marquee-dot"></div></div>`;
-    });
-  }
-  track.innerHTML = html;
+            if (flipped.length === 2) {
+                setTimeout(checkMatch, 500);
+            }
 
-  /* SCROLL REVEAL */
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+            document.getElementById('movesCount').textContent = moves;
+        }
 
-  /* MENU FILTER */
-  function filterMenu(cat, btn) {
-    document.querySelectorAll('.mtab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.mcard').forEach(card => {
-      const show = cat === 'all' || card.dataset.cat === cat;
-      card.style.display = show ? '' : 'none';
-    });
-  }
+        function checkMatch() {
+            const [idx1, idx2] = flipped;
+            if (gameCards[idx1] === gameCards[idx2]) {
+                matched.push(idx1, idx2);
+                if (matched.length === gameCards.length) {
+                    endMemoryGame();
+                }
+            }
+            flipped = [];
+            renderMemoryCards();
+        }
 
-  /* BOOKING */
-  function handleBook() {
-    const fbtn = document.querySelector('.fbtn');
-    fbtn.textContent = 'Жіберілуде...';
-    fbtn.style.opacity = '0.7';
-    setTimeout(() => {
-      fbtn.textContent = '✓ Брондау расталды';
-      fbtn.style.background = '#3a7a3a';
-      fbtn.style.color = '#fff';
-    }, 1200);
-  }
+        function startMemoryGame() {
+            gameStarted = true;
+            moves = 0;
+            flipped = [];
+            matched = [];
+            gameTime = 0;
+            document.getElementById('memoryGame').style.pointerEvents = 'auto';
+            document.getElementById('playBtn').textContent = currentLang === 'kk' ? 'Ойын ойынында...' : 'Игра идёт...';
+            document.getElementById('playBtn').disabled = true;
+            
+            if (gameTimer) clearInterval(gameTimer);
+            gameTimer = setInterval(() => {
+                gameTime++;
+                document.getElementById('timeCount').textContent = gameTime + 's';
+            }, 1000);
 
-  /* COUNTER ANIMATION */
-  function animateCount(el, target) {
-    let n = 0;
-    const step = target / 60;
-    const iv = setInterval(() => {
-      n = Math.min(n + step, target);
-      el.textContent = Math.floor(n) + (el.dataset.suffix || '');
-      if (n >= target) clearInterval(iv);
-    }, 16);
-  }
-  const countObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const nums = e.target.querySelectorAll('.astat-num');
-        nums[0] && animateCount(nums[0], 9);
-        nums[1] && animateCount(nums[1], 80);
-        countObs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.5 });
-  const statsEl = document.querySelector('.about-stats');
-  if (statsEl) countObs.observe(statsEl);
-</script>
+            renderMemoryCards();
+        }
+
+        function resetMemoryGame() {
+            gameStarted = false;
+            moves = 0;
+            flipped = [];
+            matched = [];
+            gameTime = 0;
+            if (gameTimer) clearInterval(gameTimer);
+            document.getElementById('movesCount').textContent = '0';
+            document.getElementById('matchedCount').textContent = '0/8';
+            document.getElementById('timeCount').textContent = '0s';
+            document.getElementById('playBtn').textContent = currentLang === 'kk' ? 'Ойындарды бастау' : 'Начать игру';
+            document.getElementById('playBtn').disabled = false;
+            initMemoryGame();
+        }
+
+        function endMemoryGame() {
+            gameStarted = false;
+            clearInterval(gameTimer);
+            document.getElementById('playBtn').textContent = currentLang === 'kk' ? '✅ Жеңіп аттыңыз!' : '✅ Вы выиграли!';
+        }
+
+        // ============ MENU DATA ============
+        const menuData = {
+            kk: {
+                categories: [
+                    { id: 'coffee', name: '☕ Кофе' },
+                    { id: 'milk_tea', name: '🧋 Сүтті Шәй' },
+                    { id: 'ice_cream', name: '🍦 Балмұздақ' },
+                    { id: 'waffles', name: '🧇 Вафли' },
+                    { id: 'fruit_drinks', name: '🍋 Жемістік ішімдіктер' },
+                    { id: 'milkshakes', name: '🥤 Милкшейк' }
+                ],
+                products: [
+                    { id: 1, category: 'coffee', name: 'Латте Ыстық', desc: 'Сүтті кофе', price: 600, icon: '☕' },
+                    { id: 2, category: 'coffee', name: 'Айс Латте Суық', desc: 'Салқын кофе', price: 700, icon: '🥤' },
+                    { id: 3, category: 'coffee', name: 'Капучино Ыстық', desc: 'Көбікті кофе', price: 600, icon: '☕' },
+                    { id: 4, category: 'coffee', name: 'Айс Капучино Суық', desc: 'Салқын капучино', price: 700, icon: '🥤' },
+                    { id: 5, category: 'coffee', name: 'Классикалық американо', desc: 'Қара кофе', price: 700, icon: '☕' },
+                    { id: 6, category: 'coffee', name: 'Апельсинді американо Суық', desc: 'Апельсин қосылған кофе', price: 900, icon: '🍊' },
+                    { id: 7, category: 'coffee', name: 'Жүзімді американо Суық', desc: 'Жүзім қосылған кофе', price: 900, icon: '🍇' },
+                    { id: 8, category: 'coffee', name: 'Латте кокос сүттімен', desc: 'Кокос дәмі', price: 1200, icon: '🥥' },
+                    { id: 9, category: 'milk_tea', name: 'Қара қантты тапиока шәй', desc: '', price: 900, icon: '🧋' },
+                    { id: 10, category: 'milk_tea', name: 'Кокос сүт шәй', desc: '', price: 900, icon: '🥥' },
+                    { id: 11, category: 'milk_tea', name: 'Шабдалы сүт шәй', desc: '', price: 800, icon: '🍑' },
+                    { id: 12, category: 'milk_tea', name: 'Классикалық сүт шәй', desc: '', price: 800, icon: '🍵' },
+                    { id: 13, category: 'milk_tea', name: 'Қос дәмді сүт шәй', desc: '', price: 900, icon: '🍵' },
+                    { id: 14, category: 'milk_tea', name: 'Тон тон сүт патшасы', desc: '', price: 1200, icon: '👑' },
+                    { id: 15, category: 'milk_tea', name: 'Орео сүтті шайы', desc: '', price: 900, icon: '🍪' },
+                    { id: 16, category: 'milk_tea', name: 'Шоколад-кокос шайы', desc: '', price: 900, icon: '🍫' },
+                    { id: 17, category: 'milk_tea', name: 'Құлпынай-кокос шайы', desc: '', price: 900, icon: '🍓' },
+                    { id: 18, category: 'milk_tea', name: 'Сүтті-Трио', desc: '', price: 750, icon: '🍵' },
+                    { id: 19, category: 'ice_cream', name: 'Қытырлақ балмұздақ', desc: '', price: 300, icon: '🍦' },
+                    { id: 20, category: 'ice_cream', name: 'Қызыл бұршақ матча сандэ', desc: '', price: 650, icon: '🍵' },
+                    { id: 21, category: 'ice_cream', name: 'Шоколадты сандэ', desc: '', price: 650, icon: '🍫' },
+                    { id: 22, category: 'ice_cream', name: 'Құлпынай сандэ', desc: '', price: 650, icon: '🍓' },
+                    { id: 23, category: 'ice_cream', name: 'Көкжидек сандэ', desc: '', price: 650, icon: '🫐' },
+                    { id: 24, category: 'ice_cream', name: 'Шабдалы сандэ', desc: '', price: 650, icon: '🍑' },
+                    { id: 25, category: 'ice_cream', name: 'Сандэ про макс', desc: '', price: 650, icon: '⭐' },
+                    { id: 26, category: 'waffles', name: 'Классикалық вафли', desc: '', price: 700, icon: '🧇' },
+                    { id: 27, category: 'waffles', name: 'Шоколадты вафли', desc: '', price: 700, icon: '🍫' },
+                    { id: 28, category: 'waffles', name: 'Вафли балмұздағы', desc: '', price: 1000, icon: '🍦' },
+                    { id: 29, category: 'fruit_drinks', name: 'Мұздай лимонад', desc: '', price: 400, icon: '🍋' },
+                    { id: 30, category: 'fruit_drinks', name: 'Жүзім-лимон шәй', desc: '', price: 800, icon: '🍇' },
+                    { id: 31, category: 'fruit_drinks', name: 'Апельсин шырыны', desc: '', price: 1200, icon: '🍊' },
+                    { id: 32, category: 'fruit_drinks', name: 'Манго-грейпфрут коктейль', desc: '', price: 800, icon: '🥭' },
+                    { id: 33, category: 'milkshakes', name: 'Құлпынай милкшейк', desc: '', price: 650, icon: '🍓' },
+                    { id: 34, category: 'milkshakes', name: 'Матча милкшейк', desc: '', price: 650, icon: '🍵' },
+                    { id: 35, category: 'milkshakes', name: 'Боба милкшейк', desc: '', price: 650, icon: '🧋' }
+                ]
+            },
+            ru: {
+                categories: [
+                    { id: 'coffee', name: '☕ Кофе' },
+                    { id: 'milk_tea', name: '🧋 Молочный чай' },
+                    { id: 'ice_cream', name: '🍦 Мороженое' },
+                    { id: 'waffles', name: '🧇 Вафли' },
+                    { id: 'fruit_drinks', name: '🍋 Фруктовые напитки' },
+                    { id: 'milkshakes', name: '🥤 Коктейль' }
+                ],
+                products: [
+                    { id: 1, category: 'coffee', name: 'Латте Горячий', desc: 'Молочный кофе', price: 600, icon: '☕' },
+                    { id: 2, category: 'coffee', name: 'Айс Латте Холодный', desc: 'Холодный кофе', price: 700, icon: '🥤' },
+                    { id: 3, category: 'coffee', name: 'Капучино Горячий', desc: 'Кофе с пеной', price: 600, icon: '☕' },
+                    { id: 4, category: 'coffee', name: 'Айс Капучино Холодный', desc: 'Холодный капучино', price: 700, icon: '🥤' },
+                    { id: 5, category: 'coffee', name: 'Классический американо', desc: 'Черный кофе', price: 700, icon: '☕' },
+                    { id: 6, category: 'coffee', name: 'Апельсиновый американо Холодный', desc: 'Кофе с апельсином', price: 900, icon: '🍊' },
+                    { id: 7, category: 'coffee', name: 'Виноградный американо Холодный', desc: 'Кофе с виноградом', price: 900, icon: '🍇' },
+                    { id: 8, category: 'coffee', name: 'Латте с кокосовым молоком', desc: 'Вкус кокоса', price: 1200, icon: '🥥' },
+                    { id: 9, category: 'milk_tea', name: 'Черный чай с молоком и тапиока', desc: '', price: 900, icon: '🧋' },
+                    { id: 10, category: 'milk_tea', name: 'Молочный чай с кокосом', desc: '', price: 900, icon: '🥥' },
+                    { id: 11, category: 'milk_tea', name: 'Молочный чай с персиком', desc: '', price: 800, icon: '🍑' },
+                    { id: 12, category: 'milk_tea', name: 'Классический молочный чай', desc: '', price: 800, icon: '🍵' },
+                    { id: 13, category: 'milk_tea', name: 'Молочный чай двойной вкус', desc: '', price: 900, icon: '🍵' },
+                    { id: 14, category: 'milk_tea', name: 'Тон тон молочный король', desc: '', price: 1200, icon: '👑' },
+                    { id: 15, category: 'milk_tea', name: 'Молочный чай Орео', desc: '', price: 900, icon: '🍪' },
+                    { id: 16, category: 'milk_tea', name: 'Молочный чай шоколад-кокос', desc: '', price: 900, icon: '🍫' },
+                    { id: 17, category: 'milk_tea', name: 'Молочный чай клубника-кокос', desc: '', price: 900, icon: '🍓' },
+                    { id: 18, category: 'milk_tea', name: 'Молочный чай Трио', desc: '', price: 750, icon: '🍵' },
+                    { id: 19, category: 'ice_cream', name: 'Хрустящее мороженое', desc: '', price: 300, icon: '🍦' },
+                    { id: 20, category: 'ice_cream', name: 'Красная фасоль матча сандэ', desc: '', price: 650, icon: '🍵' },
+                    { id: 21, category: 'ice_cream', name: 'Шоколадный сандэ', desc: '', price: 650, icon: '🍫' },
+                    { id: 22, category: 'ice_cream', name: 'Клубничный сандэ', desc: '', price: 650, icon: '🍓' },
+                    { id: 23, category: 'ice_cream', name: 'Черничный сандэ', desc: '', price: 650, icon: '🫐' },
+                    { id: 24, category: 'ice_cream', name: 'Персиковый сандэ', desc: '', price: 650, icon: '🍑' },
+                    { id: 25, category: 'ice_cream', name: 'Сандэ про макс', desc: '', price: 650, icon: '⭐' },
+                    { id: 26, category: 'waffles', name: 'Классические вафли', desc: '', price: 700, icon: '🧇' },
+                    { id: 27, category: 'waffles', name: 'Шоколадные вафли', desc: '', price: 700, icon: '🍫' },
+                    { id: 28, category: 'waffles', name: 'Вафли с мороженым', desc: '', price: 1000, icon: '🍦' },
+                    { id: 29, category: 'fruit_drinks', name: 'Холодный лимонад', desc: '', price: 400, icon: '🍋' },
+                    { id: 30, category: 'fruit_drinks', name: 'Виноградно-лимонный чай', desc: '', price: 800, icon: '🍇' },
+                    { id: 31, category: 'fruit_drinks', name: 'Апельсиновый сок', desc: '', price: 1200, icon: '🍊' },
+                    { id: 32, category: 'fruit_drinks', name: 'Манго-грейпфрутовый коктейль', desc: '', price: 800, icon: '🥭' },
+                    { id: 33, category: 'milkshakes', name: 'Клубничный коктейль', desc: '', price: 650, icon: '🍓' },
+                    { id: 34, category: 'milkshakes', name: 'Матча коктейль', desc: '', price: 650, icon: '🍵' },
+                    { id: 35, category: 'milkshakes', name: 'Боба коктейль', desc: '', price: 650, icon: '🧋' }
+                ]
+            }
+        };
+
+        // ============ STATE ============
+        let currentLang = 'kk';
+        let currentCategory = 'coffee';
+        let cart = {};
+
+        // ============ PAGE NAVIGATION ============
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageName + '-page').classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                const btnText = link.textContent.trim();
+                if (pageName === 'home' && btnText === 'Басты') link.classList.add('active');
+                else if (pageName === 'menu' && btnText === 'Меню') link.classList.add('active');
+                else if (pageName === 'games' && btnText === 'Ойындар') link.classList.add('active');
+                else if (pageName === 'about' && btnText === 'Туралы') link.classList.add('active');
+                else if (pageName === 'delivery' && btnText === 'Жеткізу') link.classList.add('active');
+                else if (pageName === 'contact' && btnText === 'Байланыс') link.classList.add('active');
+            });
+
+            window.scrollTo(0, 0);
+
+            if (pageName === 'games' && gameCards.length === 0) {
+                initMemoryGame();
+            }
+        }
+
+        // ============ LANGUAGE ============
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-toggle').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            updateTexts();
+            renderCategories();
+            renderProducts();
+            renderPopularProducts();
+            updateCartUI();
+        }
+
+        function updateTexts() {
+            const texts = {
+                kk: {
+                    'hero-title': 'WEDRINK - Қош келдіңіз!',
+                    'hero-subtitle': 'Біз танымдарың үшін өте дәмді кофе мен ішімдіктер ұсынамыз. Жұмсақ әйнек, таза ауа және жылы атмосфера құ құрамасында сізді көргісім келеді.',
+                    'hero-btn': 'Менюді қараңыз',
+                    'features-title': 'Неге WEDRINK?',
+                    'features-subtitle': 'Біз ең жақсы қызмет пен сапаны ұсынамыз',
+                    'feature1-title': 'Премиум Сапасы',
+                    'feature1-desc': 'Ең сапалы құрамдас бөлшектер қолдану',
+                    'feature2-title': 'Тез Қызмет',
+                    'feature2-desc': 'Бесжаста теңге өйтілген, балалы қызмет',
+                    'feature3-title': 'Ерекше ұсыныстар',
+                    'feature3-desc': 'Әрбір апта жаңа үзінді ішімдіктер',
+                    'feature4-title': 'Оңай Тапсырыс',
+                    'feature4-desc': 'Мобильде тапсырыс беру барлық қалай болады',
+                    'popular-title': 'Танымдалған Өнімдер',
+                    'games-title': '🎮 Ойындар',
+                    'games-subtitle': 'Ләззат көтерісіңіз! Забавные игры с кофе 😄',
+                    'memory-title': '🎯 Жұпты Табу Ойыны',
+                    'memory-desc': 'Барлық жұптарды табыңыз! Найди все пары. Жылдамсыңыз! ⏱️',
+                    'moves-label': 'Жүрістер',
+                    'matched-label': 'Табылды',
+                    'time-label': 'Уақыт',
+                    'playBtn': 'Ойындарды бастау',
+                    'about-title': 'Біз туралы',
+                    'about-desc1': 'WEDRINK - Тараз қаласында ешкімнің кофе мәденiyetін ұсыну құ құрылған әлеуметтік ғана емес, коммерциялық орын. Бізде өте немәселі кофе, шарттаушы чай және өзге ішімдіктер бар.',
+                    'about-desc2': 'Біздің мақсаты - әрбір ашуға дәмді және сапалы өнім ұсыну. Бізде ең жақсы қызмет берілетін команда бар.',
+                    'about-list1': 'Таза және әдемі интерьер',
+                    'about-list2': 'Сапалы кофе және шай',
+                    'about-list3': 'Ассоци ешегі команда',
+                    'about-list4': 'Жұрын пәтер атмосфера',
+                    'about-list5': 'Салқын және ыстық ішімдіктер',
+                    'delivery-title': 'Жеткізу',
+                    'delivery-subtitle': 'Біз Тараз қаласының барлық аймағында жеткізу ұсынамыз',
+                    'delivery-opt1': 'Тез Жеткізу',
+                    'delivery-desc1': '30 минут ішінде тапсырысыңыз жеткізіледі. Таза және сыпайы құдықшы.',
+                    'delivery-opt2': 'Іс Жұмыс',
+                    'delivery-desc2': '09:00 - 22:00 аралығында ашық. Өте жүй демеу шеңберінде жеткізу қызмет.',
+                    'delivery-opt3': 'Тұрақты Бағалар',
+                    'delivery-desc3': 'Барлық бағалар уақтында өзгермейді. Вызыв және онлайндағы үйлестіру арқылы тапсырыс беріңіз.',
+                    'contact-title': 'Байланыс',
+                    'contact-subtitle': 'WEDRINK-ті сұрау үшін Instagram-та бізді тап',
+                    'contact-addr-title': 'Адрес',
+                    'contact-addr': 'Тараз қаласы, Абайлық көшесі, 42',
+                    'contact-whatsapp-title': 'WhatsApp',
+                    'contact-whatsapp': '+7 (778) 377-23-52',
+                    'instagram-text': 'WEDRINK-ті Instagram-та іздеңіз',
+                    'instagram-follow': '@wedrink.kz',
+                    'cart-title': 'Сіздің тапсырысыңыз',
+                    'total-label': 'Барлығы',
+                    'whatsapp-btn-text': 'WhatsApp арқылы тапсыру',
+                    'footer-desc': 'Тараз қаласында өте дәмті кофе мен ішімдіктер ұсынамыз.',
+                    'footer-menu': 'МЕНЮ',
+                    'footer-company': 'КОМПАНИЯ',
+                    'footer-contact': 'БАЙЛАНЫС',
+                    'footer-bottom': '© 2024 WEDRINK Taraz. Барлық құқықтар қорғалған.',
+                    'camera-title': '📷 WEDRINK КАМЕРАСЫ',
+                    'camera-subtitle': 'Өзіңіз пен сіздің түсімді WEDRINK-те түсіңіз! 📸',
+                    'start-camera-text': '📷 Камераны ашу',
+                    'close-camera-text': '❌ Жабу'
+                },
+                ru: {
+                    'hero-title': 'WEDRINK - Добро пожаловать!',
+                    'hero-subtitle': 'Мы предлагаем вкусный кофе и напитки для вас. Мягкий свет, чистый воздух и теплая атмосфера в одном месте.',
+                    'hero-btn': 'Посмотреть меню',
+                    'features-title': 'Почему WEDRINK?',
+                    'features-subtitle': 'Мы предлагаем лучший сервис и качество',
+                    'feature1-title': 'Премиум качество',
+                    'feature1-desc': 'Используем только лучшие ингредиенты',
+                    'feature2-title': 'Быстрый сервис',
+                    'feature2-desc': 'Быстрое и вежливое обслуживание',
+                    'feature3-title': 'Специальные предложения',
+                    'feature3-desc': 'Новые напитки каждую неделю',
+                    'feature4-title': 'Легкий заказ',
+                    'feature4-desc': 'Заказ на мобильном как никогда простой',
+                    'popular-title': 'Популярные товары',
+                    'games-title': '🎮 Игры',
+                    'games-subtitle': 'Развлекайтесь! Забавные игры с кофе 😄',
+                    'memory-title': '🎯 Найди пару',
+                    'memory-desc': 'Найди все пары! Find all pairs. Поторопись! ⏱️',
+                    'moves-label': 'Ходы',
+                    'matched-label': 'Найдено',
+                    'time-label': 'Время',
+                    'playBtn': 'Начать игру',
+                    'about-title': 'О нас',
+                    'about-desc1': 'WEDRINK - кофейня в городе Тараз, где мы предлагаем культуру кофе. У нас есть вкусный кофе, чай и другие напитки.',
+                    'about-desc2': 'Наша цель - предоставить вкусный и качественный продукт каждому клиенту. У нас работает дружелюбная команда.',
+                    'about-list1': 'Чистый и красивый интерьер',
+                    'about-list2': 'Качественный кофе и чай',
+                    'about-list3': 'Дружелюбная команда',
+                    'about-list4': 'Уютная атмосфера',
+                    'about-list5': 'Горячие и холодные напитки',
+                    'delivery-title': 'Доставка',
+                    'delivery-subtitle': 'Мы доставляем во все районы города Тараз',
+                    'delivery-opt1': 'Быстрая доставка',
+                    'delivery-desc1': 'Ваш заказ будет доставлен в течение 30 минут. Чистая и вежливая доставка.',
+                    'delivery-opt2': 'Часы работы',
+                    'delivery-desc2': 'Открыто с 09:00 до 22:00. Быстрый и надежный сервис доставки.',
+                    'delivery-opt3': 'Фиксированные цены',
+                    'delivery-desc3': 'Цены не меняются со временем. Заказывайте через звонок и онлайн.',
+                    'contact-title': 'Контакты',
+                    'contact-subtitle': 'Найди WEDRINK в Instagram для вопросов и предложений',
+                    'contact-addr-title': 'Адрес',
+                    'contact-addr': 'Город Тараз, улица Абайлык, 42',
+                    'contact-whatsapp-title': 'WhatsApp',
+                    'contact-whatsapp': '+7 (778) 377-23-52',
+                    'instagram-text': 'Найдите WEDRINK в Instagram',
+                    'instagram-follow': '@wedrink.kz',
+                    'cart-title': 'Ваш заказ',
+                    'total-label': 'Итого',
+                    'whatsapp-btn-text': 'Заказать в WhatsApp',
+                    'footer-desc': 'Мы предлагаем вкусный кофе и напитки в городе Тараз.',
+                    'footer-menu': 'МЕНЮ',
+                    'footer-company': 'КОМПАНИЯ',
+                    'footer-contact': 'КОНТАКТЫ',
+                    'footer-bottom': '© 2024 WEDRINK Taraz. Все права защищены.',
+                    'camera-title': '📷 WEDRINK КАМЕРА',
+                    'camera-subtitle': 'Сфотографируйтесь со своим напитком WEDRINK! 📸',
+                    'start-camera-text': '📷 Открыть камеру',
+                    'close-camera-text': '❌ Закрыть'
+                }
+            };
+
+            Object.entries(texts[currentLang]).forEach(([id, text]) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            });
+        }
+
+        // ============ RENDER CATEGORIES ============
+        function renderCategories() {
+            const categories = menuData[currentLang].categories;
+            document.getElementById('categoriesContent').innerHTML = categories.map(cat => `
+                <button class="category-tab ${cat.id === currentCategory ? 'active' : ''}" data-category="${cat.id}" onclick="selectCategory('${cat.id}')">
+                    ${cat.name}
+                </button>
+            `).join('');
+        }
+
+        function selectCategory(catId) {
+            currentCategory = catId;
+            renderCategories();
+            renderProducts();
+        }
+
+        // ============ RENDER PRODUCTS ============
+        function renderProducts() {
+            const products = menuData[currentLang].products.filter(p => p.category === currentCategory);
+            const html = products.map(product => {
+                const cartItem = cart[product.id] || { qty: 0 };
+                return `
+                    <div class="product-card">
+                        <div class="product-icon">${product.icon}</div>
+                        <div class="product-info">
+                            <div class="product-name">${product.name}</div>
+                            ${product.desc ? `<div class="product-desc">${product.desc}</div>` : ''}
+                            <div class="product-price">${product.price}₸</div>
+                        </div>
+                        <div class="product-actions">
+                            ${cartItem.qty > 0 ? `
+                                <button class="qty-btn remove" onclick="updateQty(${product.id}, 'remove')">−</button>
+                                <div class="quantity-display">${cartItem.qty}</div>
+                            ` : ''}
+                            <button class="qty-btn add" onclick="updateQty(${product.id}, 'add')">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('productsContainer').innerHTML = html;
+        }
+
+        // ============ RENDER POPULAR PRODUCTS ============
+        function renderPopularProducts() {
+            const popular = [1, 8, 14, 26, 31, 33];
+            const html = popular.map(id => {
+                const product = menuData[currentLang].products.find(p => p.id === id);
+                return `
+                    <div class="product-item">
+                        <div class="product-emoji">${product.icon}</div>
+                        <h4>${product.name}</h4>
+                        <p>${product.price}₸</p>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('popularProducts').innerHTML = html;
+        }
+
+        // ============ CART FUNCTIONS ============
+        function updateQty(productId, action) {
+            const product = menuData[currentLang].products.find(p => p.id === productId);
+            if (!cart[productId]) {
+                cart[productId] = { qty: 0, product };
+            }
+            
+            if (action === 'add') {
+                cart[productId].qty++;
+            } else {
+                cart[productId].qty--;
+                if (cart[productId].qty === 0) delete cart[productId];
+            }
+            renderProducts();
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = Object.values(cart).reduce((sum, item) => sum + (item.product.price * item.qty), 0);
+
+            if (totalItems > 0) {
+                document.getElementById('cartBadge').textContent = totalItems;
+                document.getElementById('cartBadge').style.display = 'flex';
+                document.getElementById('cartFloatingBadge').textContent = totalItems;
+                document.getElementById('cartFloatingBadge').style.display = 'flex';
+            } else {
+                document.getElementById('cartBadge').style.display = 'none';
+                document.getElementById('cartFloatingBadge').style.display = 'none';
+            }
+
+            document.getElementById('cartTotal').textContent = `${totalPrice}₸`;
+            renderCartItems();
+        }
+
+        function renderCartItems() {
+            if (Object.keys(cart).length === 0) {
+                document.getElementById('cartItemsContainer').innerHTML = `
+                    <div class="cart-empty">
+                        <div class="cart-empty-icon">🛒</div>
+                        <div>${currentLang === 'kk' ? 'Сіздің себетіңіз бос' : 'Ваша корзина пуста'}</div>
+                    </div>
+                `;
+                return;
+            }
+
+            document.getElementById('cartItemsContainer').innerHTML = Object.entries(cart).map(([id, item]) => {
+                const itemTotal = item.product.price * item.qty;
+                return `
+                    <div class="cart-item">
+                        <div class="cart-item-icon">${item.product.icon}</div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.product.name}</div>
+                            <div class="cart-item-qty">×${item.qty} × ${item.product.price}₸ = ${itemTotal}₸</div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeCartItem(${id})">✕</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function removeCartItem(productId) {
+            delete cart[productId];
+            renderProducts();
+            updateCartUI();
+        }
+
+        function openCart() {
+            document.getElementById('cartOverlay').classList.add('active');
+            document.getElementById('cartPanel').classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cartOverlay').classList.remove('active');
+            document.getElementById('cartPanel').classList.remove('active');
+        }
+
+        // ============ WHATSAPP ============
+        function generateWhatsappMessage() {
+            if (Object.keys(cart).length === 0) {
+                alert(currentLang === 'kk' ? 'Сіздің себетіңіз бос' : 'Ваша корзина пуста');
+                return;
+            }
+
+            const isKazakh = currentLang === 'kk';
+            const now = new Date();
+            const dateStr = now.toLocaleDateString(isKazakh ? 'kk-KZ' : 'ru-RU');
+            const timeStr = now.toLocaleTimeString(isKazakh ? 'kk-KZ' : 'ru-RU');
+
+            let message = isKazakh 
+                ? `🛍️ *Жаңа тапсырыс* 🕒 ${dateStr} ${timeStr}\n\n`
+                : `🛍️ *Новый заказ* 🕒 ${dateStr} ${timeStr}\n\n`;
+
+            let total = 0;
+            Object.values(cart).forEach(item => {
+                const subtotal = item.product.price * item.qty;
+                total += subtotal;
+                message += `${item.product.icon} ${item.product.name}\n`;
+                message += `   ×${item.qty} × ${item.product.price}₸ = ${subtotal}₸\n\n`;
+            });
+
+            message += `━━━━━━━━━━━━━━━━━\n`;
+            message += isKazakh 
+                ? `*Жалпы сома: ${total}₸*\n\n📌 Клиенттің тапсырысы WEDRINK сайтынан келді`
+                : `*Итого: ${total}₸*\n\n📌 Заказ клиента пришел с сайта WEDRINK`;
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // ============ CAMERA FUNCTIONS ============
+        let cameraStream = null;
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                });
+                
+                cameraStream = stream;
+                document.getElementById('video').srcObject = stream;
+                document.getElementById('startCameraBtn').style.display = 'none';
+                document.getElementById('closeCameraBtn').style.display = 'inline-flex';
+                showCameraMessage(currentLang === 'kk' ? '✅ Камера ашылды!' : '✅ Камера открыта!');
+            } catch (error) {
+                let errorMsg = '';
+                
+                if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                    errorMsg = currentLang === 'kk' ? '❌ Рұқсат беілген жоқ!\nПараметрлерден рұқсат беру керек.' : '❌ Доступ запрещен!\nРазрешите доступ в настройках.';
+                } else if (error.name === 'NotFoundError' || error.name === 'DevicesNotFoundError') {
+                    errorMsg = currentLang === 'kk' ? '❌ Камера табылмады!\nКамера қосулы ма?' : '❌ Камера не найдена!\nПроверьте подключение.';
+                } else if (error.name === 'NotReadableError') {
+                    errorMsg = currentLang === 'kk' ? '❌ Камера басқа приложениеде ашық!\nОны жабу керек.' : '❌ Камера занята другим приложением!\nЗакройте его.';
+                } else if (error.name === 'SecurityError') {
+                    errorMsg = currentLang === 'kk' ? '❌ HTTPS қажет!\nHTTP-де қолдау жоқ.' : '❌ Требуется HTTPS!\nHTTP не поддерживается.';
+                } else {
+                    errorMsg = currentLang === 'kk' ? `❌ Қате: ${error.name}` : `❌ Ошибка: ${error.name}`;
+                }
+                
+                showCameraMessage(errorMsg);
+                console.error('Camera error:', error);
+            }
+        }
+
+        function stopCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            document.getElementById('startCameraBtn').style.display = 'inline-flex';
+            document.getElementById('closeCameraBtn').style.display = 'none';
+            document.getElementById('video').srcObject = null;
+            showCameraMessage('');
+        }
+
+        function showCameraMessage(msg) {
+            const msgEl = document.getElementById('cameraMessage');
+            if (msgEl) {
+                msgEl.textContent = msg;
+            }
+        }
+
+        // ============ INIT ============
+        window.addEventListener('load', () => {
+            setLanguage('kk');
+        });
+    </script>
 </body>
 </html>
