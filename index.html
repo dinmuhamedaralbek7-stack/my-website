@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEDRINK - Тараз - Кәсіптік Кофе</title>
+    <title>Тараз - Кәсіптік Кофе</title>
     <style>
         * {
             margin: 0;
@@ -80,31 +80,72 @@
 
         .nav-menu {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
             list-style: none;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 0 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-menu::-webkit-scrollbar {
+            height: 0;
         }
 
         .nav-link {
-            padding: 8px 14px;
-            border-radius: 10px;
+            padding: 10px 16px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 12px;
+            font-weight: 800;
             color: var(--text-secondary);
             transition: all 0.3s ease;
-            background: transparent;
-            border: none;
+            background: white;
+            border: 1.5px solid #E8EEF8;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             user-select: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
         }
 
         .nav-link.active,
         .nav-link:hover {
             background: linear-gradient(135deg, #4A90E2, #50D4C8);
             color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.order-btn {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E72);
+            color: white;
+            border-color: transparent;
+            font-weight: 900;
+            font-size: 13px;
+            box-shadow: var(--shadow-md);
+            margin-left: auto;
+            animation: pulse 2s infinite;
+        }
+
+        .nav-link.order-btn:hover {
+            background: linear-gradient(135deg, #FF5252, #FF7060);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
         }
 
         .header-actions {
@@ -1479,6 +1520,56 @@
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 768px) {
+            .header-content {
+                padding: 12px 12px;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                font-size: 20px;
+                min-width: fit-content;
+            }
+
+            .nav-menu {
+                gap: 4px;
+                padding: 0 4px;
+                order: 3;
+                width: 100%;
+                flex-wrap: nowrap;
+            }
+
+            .nav-link {
+                padding: 9px 12px;
+                font-size: 11px;
+                gap: 3px;
+            }
+
+            .nav-link.order-btn {
+                background: linear-gradient(135deg, #FF6B6B, #FF8E72);
+                padding: 9px 14px;
+                font-size: 12px;
+                font-weight: 900;
+                margin-left: auto;
+                order: 2;
+                flex-shrink: 0;
+            }
+
+            .header-actions {
+                order: 1;
+                gap: 8px;
+            }
+
+            .lang-toggle {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+
+            .cart-btn {
+                width: 40px;
+                height: 40px;
+            }
+
             .memory-game {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -1493,6 +1584,19 @@
         }
 
         @media (min-width: 768px) {
+            .header-content {
+                flex-wrap: nowrap;
+            }
+
+            .nav-menu {
+                flex-wrap: nowrap;
+                margin: 0 auto;
+            }
+
+            .nav-link.order-btn {
+                margin-left: auto;
+            }
+
             .products {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 14px;
@@ -1546,13 +1650,12 @@
                 <span>WEDRINK</span>
             </a>
             <ul class="nav-menu">
-                <li><button class="nav-link active" onclick="showPage('home')">Басты</button></li>
-                <li><button class="nav-link" onclick="showPage('menu')">Меню</button></li>
-                <li><button class="nav-link" onclick="showPage('games')">Ойындар</button></li>
+                <li><button class="nav-link active" onclick="showPage('home')">🏠 Басты</button></li>
+                <li><button class="nav-link" onclick="showPage('menu')">🍹 Меню</button></li>
+                <li><button class="nav-link" onclick="showPage('games')">🎮 Ойындар</button></li>
                 <li><button class="nav-link" onclick="showPage('camera')">📷 Камера</button></li>
-                <li><button class="nav-link" onclick="showPage('about')">Туралы</button></li>
-                <li><button class="nav-link" onclick="showPage('delivery')">Жеткізу</button></li>
-                <li><button class="nav-link" onclick="showPage('contact')">Байланыс</button></li>
+                <li><button class="nav-link" onclick="showPage('contact')">💬 Байланыс</button></li>
+                <li><button class="nav-link order-btn" onclick="showPage('menu')">🛍️ Заказть</button></li>
             </ul>
             <div class="header-actions">
                 <button class="lang-toggle active" data-lang="kk" onclick="setLanguage('kk')">Қаз</button>
@@ -1572,7 +1675,7 @@
             <div class="hero-content">
                 <div class="hero-emoji">☕</div>
                 <h1 id="hero-title">WEDRINK - Қош келдіңіз!</h1>
-                <p id="hero-subtitle">Біз танымдарың үшін өте дәмді кофе мен ішімдіктер ұсынамыз. Жұмсақ әйнек, таза ауа және жылы атмосфера құ құрамасында сізді көргісім келеді.</p>
+                <p id="hero-subtitle">Сіздің үшін өте дәмді кофе мен ішімдіктер ұсынамыз. Жұмсақ әйнек, таза ауа және жылы атмосфера құрамасында сізді көргісім келеді.</p>
                 <button class="hero-btn" onclick="showPage('menu')" id="hero-btn">Менюді қараңыз</button>
             </div>
         </section>
@@ -1585,22 +1688,22 @@
                 <div class="feature-card">
                     <div class="feature-icon">⭐</div>
                     <h3 id="feature1-title">Премиум Сапасы</h3>
-                    <p id="feature1-desc">Ең сапалы құрамдас бөлшектер қолдану</p>
+                    <p id="feature1-desc">Ең сапалы құрамалық бөлік қолдану</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
                     <h3 id="feature2-title">Тез Қызмет</h3>
-                    <p id="feature2-desc">Бесжаста теңге өйтілген, балалы қызмет</p>
+                    <p id="feature2-desc">Ынамды және сүйінді қызмет</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🎁</div>
                     <h3 id="feature3-title">Ерекше ұсыныстар</h3>
-                    <p id="feature3-desc">Әрбір апта жаңа үзінді ішімдіктер</p>
+                    <p id="feature3-desc">Әрбір аптада жаңа ішімдіктер</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📱</div>
                     <h3 id="feature4-title">Оңай Тапсырыс</h3>
-                    <p id="feature4-desc">Мобильде тапсырыс беру барлық қалай болады</p>
+                    <p id="feature4-desc">Мобильде заказ беру өте оңай</p>
                 </div>
             </div>
         </section>
@@ -1608,7 +1711,7 @@
         <!-- PRODUCTS SHOWCASE -->
         <section class="products-showcase">
             <div class="menu-container">
-                <h2 class="section-title" id="popular-title">Танымдалған Өнімдер</h2>
+                <h2 class="section-title" id="popular-title">Танымал Өнімдер</h2>
                 <div class="products-grid" id="popularProducts"></div>
             </div>
         </section>
@@ -1685,49 +1788,6 @@
             </div>
         </section>
     </div>
-    <div class="page" id="about-page">
-        <section class="about-section">
-            <div class="about-grid">
-                <div class="about-image">🏪</div>
-                <div class="about-content">
-                    <h2 id="about-title">Біз туралы</h2>
-                    <p id="about-desc1">WEDRINK - Тараз қаласында ешкімнің кофе мәденiyetін ұсыну құ құрылған әлеуметтік ғана емес, коммерциялық орын. Бізде өте немәселі кофе, шарттаушы чай және өзге ішімдіктер бар.</p>
-                    <p id="about-desc2">Біздің мақсаты - әрбір ашуға дәмді және сапалы өнім ұсыну. Бізде ең жақсы қызмет берілетін команда бар.</p>
-                    <ul class="about-list">
-                        <li id="about-list1">Таза және әдемі интерьер</li>
-                        <li id="about-list2">Сапалы кофе және шай</li>
-                        <li id="about-list3">Ассоци ешегі команда</li>
-                        <li id="about-list4">Жұрын пәтер атмосфера</li>
-                        <li id="about-list5">Салқын және ыстық ішімдіктер</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ============ DELIVERY PAGE ============ -->
-    <div class="page" id="delivery-page">
-        <section class="delivery-section">
-            <h2 class="section-title" id="delivery-title">Жеткізу</h2>
-            <p class="section-subtitle" id="delivery-subtitle">Біз Тараз қаласының барлық аймағында жеткізу ұсынамыз</p>
-            <div class="delivery-image">🚗</div>
-            <div class="delivery-grid">
-                <div class="delivery-card">
-                    <h3 id="delivery-opt1">Тез Жеткізу</h3>
-                    <p id="delivery-desc1">30 минут ішінде тапсырысыңыз жеткізіледі. Таза және сыпайы құдықшы.</p>
-                </div>
-                <div class="delivery-card">
-                    <h3 id="delivery-opt2">Іс Жұмыс</h3>
-                    <p id="delivery-desc2">09:00 - 22:00 аралығында ашық. Өте жүй демеу шеңберінде жеткізу қызмет.</p>
-                </div>
-                <div class="delivery-card">
-                    <h3 id="delivery-opt3">Тұрақты Бағалар</h3>
-                    <p id="delivery-desc3">Барлық бағалар уақтында өзгермейді. Вызыв және онлайндағы үйлестіру арқылы тапсырыс беріңіз.</p>
-                </div>
-            </div>
-        </section>
-    </div>
-
     <!-- ============ CONTACT PAGE ============ -->
     <div class="page" id="contact-page">
         <section class="contact-section">
@@ -2040,12 +2100,11 @@
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
                 const btnText = link.textContent.trim();
-                if (pageName === 'home' && btnText === 'Басты') link.classList.add('active');
-                else if (pageName === 'menu' && btnText === 'Меню') link.classList.add('active');
-                else if (pageName === 'games' && btnText === 'Ойындар') link.classList.add('active');
-                else if (pageName === 'about' && btnText === 'Туралы') link.classList.add('active');
-                else if (pageName === 'delivery' && btnText === 'Жеткізу') link.classList.add('active');
-                else if (pageName === 'contact' && btnText === 'Байланыс') link.classList.add('active');
+                if (pageName === 'home' && (btnText.includes('Басты') || btnText.includes('Главная'))) link.classList.add('active');
+                else if (pageName === 'menu' && (btnText.includes('Меню') || btnText.includes('Menu'))) link.classList.add('active');
+                else if (pageName === 'games' && (btnText.includes('Ойындар') || btnText.includes('Игры'))) link.classList.add('active');
+                else if (pageName === 'camera' && (btnText.includes('Камера') || btnText.includes('Camera'))) link.classList.add('active');
+                else if (pageName === 'contact' && (btnText.includes('Байланыс') || btnText.includes('Контакт'))) link.classList.add('active');
             });
 
             window.scrollTo(0, 0);
@@ -2073,43 +2132,27 @@
             const texts = {
                 kk: {
                     'hero-title': 'WEDRINK - Қош келдіңіз!',
-                    'hero-subtitle': 'Біз танымдарың үшін өте дәмді кофе мен ішімдіктер ұсынамыз. Жұмсақ әйнек, таза ауа және жылы атмосфера құ құрамасында сізді көргісім келеді.',
+                    'hero-subtitle': 'Сіздің үшін өте дәмді кофе мен ішімдіктер ұсынамыз. Жұмсақ әйнек, таза ауа және жылы атмосфера құрамасында сізді көргісім келеді.',
                     'hero-btn': 'Менюді қараңыз',
                     'features-title': 'Неге WEDRINK?',
                     'features-subtitle': 'Біз ең жақсы қызмет пен сапаны ұсынамыз',
                     'feature1-title': 'Премиум Сапасы',
-                    'feature1-desc': 'Ең сапалы құрамдас бөлшектер қолдану',
+                    'feature1-desc': 'Ең сапалы құрамалық бөлік қолдану',
                     'feature2-title': 'Тез Қызмет',
-                    'feature2-desc': 'Бесжаста теңге өйтілген, балалы қызмет',
+                    'feature2-desc': 'Ынамды және сүйінді қызмет',
                     'feature3-title': 'Ерекше ұсыныстар',
-                    'feature3-desc': 'Әрбір апта жаңа үзінді ішімдіктер',
+                    'feature3-desc': 'Әрбір аптада жаңа ішімдіктер',
                     'feature4-title': 'Оңай Тапсырыс',
-                    'feature4-desc': 'Мобильде тапсырыс беру барлық қалай болады',
-                    'popular-title': 'Танымдалған Өнімдер',
+                    'feature4-desc': 'Мобильде заказ беру өте оңай',
+                    'popular-title': 'Танымал Өнімдер',
                     'games-title': '🎮 Ойындар',
                     'games-subtitle': 'Ләззат көтерісіңіз! Забавные игры с кофе 😄',
                     'memory-title': '🎯 Жұпты Табу Ойыны',
-                    'memory-desc': 'Барлық жұптарды табыңыз! Найди все пары. Жылдамсыңыз! ⏱️',
+                    'memory-desc': 'Барлық жұптарды табыңыз! Найди все пары. Жылдамдағы! ⏱️',
                     'moves-label': 'Жүрістер',
                     'matched-label': 'Табылды',
                     'time-label': 'Уақыт',
                     'playBtn': 'Ойындарды бастау',
-                    'about-title': 'Біз туралы',
-                    'about-desc1': 'WEDRINK - Тараз қаласында ешкімнің кофе мәденiyetін ұсыну құ құрылған әлеуметтік ғана емес, коммерциялық орын. Бізде өте немәселі кофе, шарттаушы чай және өзге ішімдіктер бар.',
-                    'about-desc2': 'Біздің мақсаты - әрбір ашуға дәмді және сапалы өнім ұсыну. Бізде ең жақсы қызмет берілетін команда бар.',
-                    'about-list1': 'Таза және әдемі интерьер',
-                    'about-list2': 'Сапалы кофе және шай',
-                    'about-list3': 'Ассоци ешегі команда',
-                    'about-list4': 'Жұрын пәтер атмосфера',
-                    'about-list5': 'Салқын және ыстық ішімдіктер',
-                    'delivery-title': 'Жеткізу',
-                    'delivery-subtitle': 'Біз Тараз қаласының барлық аймағында жеткізу ұсынамыз',
-                    'delivery-opt1': 'Тез Жеткізу',
-                    'delivery-desc1': '30 минут ішінде тапсырысыңыз жеткізіледі. Таза және сыпайы құдықшы.',
-                    'delivery-opt2': 'Іс Жұмыс',
-                    'delivery-desc2': '09:00 - 22:00 аралығында ашық. Өте жүй демеу шеңберінде жеткізу қызмет.',
-                    'delivery-opt3': 'Тұрақты Бағалар',
-                    'delivery-desc3': 'Барлық бағалар уақтында өзгермейді. Вызыв және онлайндағы үйлестіру арқылы тапсырыс беріңіз.',
                     'contact-title': 'Байланыс',
                     'contact-subtitle': 'WEDRINK-ті сұрау үшін Instagram-та бізді тап',
                     'contact-addr-title': 'Адрес',
@@ -2121,7 +2164,7 @@
                     'cart-title': 'Сіздің тапсырысыңыз',
                     'total-label': 'Барлығы',
                     'whatsapp-btn-text': 'WhatsApp арқылы тапсыру',
-                    'footer-desc': 'Тараз қаласында өте дәмті кофе мен ішімдіктер ұсынамыз.',
+                    'footer-desc': 'Тараз қаласында өте дәмді кофе мен ішімдіктер ұсынамыз.',
                     'footer-menu': 'МЕНЮ',
                     'footer-company': 'КОМПАНИЯ',
                     'footer-contact': 'БАЙЛАНЫС',
@@ -2363,7 +2406,7 @@
                 ? `*Жалпы сома: ${total}₸*\n\n📌 Клиенттің тапсырысы WEDRINK сайтынан келді`
                 : `*Итого: ${total}₸*\n\n📌 Заказ клиента пришел с сайта WEDRINK`;
 
-            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+            window.open(`https://wa.me/87783772352?text=${encodeURIComponent(message)}`, '_blank');
         }
 
         // ============ CAMERA FUNCTIONS ============
