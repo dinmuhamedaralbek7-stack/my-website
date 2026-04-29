@@ -1,0 +1,2432 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEDRINK - Тараз - Кәсіптік Кофе</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4A90E2;
+            --secondary: #50D4C8;
+            --accent: #FF6B6B;
+            --bg-light: #F0F7FF;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A1A2E;
+            --text-secondary: #6C757D;
+            --border-radius: 18px;
+            --shadow-sm: 0 2px 8px rgba(74, 144, 226, 0.08);
+            --shadow-md: 0 4px 16px rgba(74, 144, 226, 0.12);
+            --shadow-lg: 0 8px 28px rgba(74, 144, 226, 0.16);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #FAFBFC;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ============ HEADER / NAVIGATION ============ */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+            box-shadow: var(--shadow-sm);
+            padding: 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logo-emoji {
+            font-size: 28px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 8px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            background: transparent;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            user-select: none;
+        }
+
+        .nav-link.active,
+        .nav-link:hover {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-toggle {
+            background: #F5F7FB;
+            border: 1.5px solid #E0E6F2;
+            border-radius: 10px;
+            padding: 7px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .lang-toggle.active {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        .cart-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .cart-btn:active {
+            transform: scale(0.92);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E72);
+            color: white;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2.5px solid white;
+            animation: badgePulse 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+        }
+
+        /* ============ PAGE SECTIONS ============ */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #E8F5F0 100%);
+            padding: 60px 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 3s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .hero-btn {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .hero-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ============ FEATURES SECTION ============ */
+        .features {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(74, 144, 226, 0.06);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ============ PRODUCTS SHOWCASE ============ */
+        .products-showcase {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #E8F5F0 100%);
+            padding: 80px 16px;
+            margin: 80px 0 0 0;
+        }
+
+        .products-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .product-item {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .product-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-emoji {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .product-item h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .product-item p {
+            font-size: 12px;
+            color: #4A90E2;
+            font-weight: 700;
+        }
+
+        /* ============ GAMES SECTION ============ */
+        .games-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 40px;
+        }
+
+        .game-info {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .game-info h3 {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .game-info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        /* ============ MEMORY GAME ============ */
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            border: none;
+            border-radius: 12px;
+            font-size: 36px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .memory-card.flipped {
+            background: white;
+            border: 2px solid #4A90E2;
+        }
+
+        .memory-card.matched {
+            background: linear-gradient(135deg, #25D366, #20BA5E);
+            color: white;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(80, 212, 200, 0.05));
+            border-radius: 12px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .game-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .game-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .game-btn:active {
+            transform: scale(0.96);
+        }
+
+        .game-btn.secondary {
+            background: #F5F7FB;
+            color: #4A90E2;
+            border: 1.5px solid #4A90E2;
+        }
+
+        /* ============ ABOUT SECTION ============ */
+        .about-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-content h2 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .about-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .about-list {
+            list-style: none;
+            margin: 24px 0;
+        }
+
+        .about-list li {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+
+        .about-list li::before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        /* ============ CONTACT SECTION ============ */
+        .contact-section {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #E8F5F0 100%);
+            padding: 80px 16px;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 24px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .contact-card h3 {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .contact-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .contact-form {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ============ INSTAGRAM SECTION ============ */
+        .instagram-section {
+            background: white;
+            padding: 48px 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .instagram-link {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .instagram-link:hover {
+            transform: scale(1.02);
+        }
+
+        .instagram-logo {
+            font-size: 120px;
+            margin-bottom: 24px;
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.3));
+            animation: bounce 3s infinite;
+        }
+
+        .instagram-link h3 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: #667eea;
+        }
+
+        .instagram-link p {
+            font-size: 18px;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 24px;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #E0E6F2;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ============ DELIVERY SECTION ============ */
+        .delivery-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .delivery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .delivery-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(74, 144, 226, 0.06);
+        }
+
+        .delivery-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .delivery-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .delivery-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(80, 212, 200, 0.1));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            margin-bottom: 40px;
+        }
+
+        /* ============ MENU PAGE ============ */
+        .menu-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 16px;
+            padding-bottom: 120px;
+        }
+
+        .categories {
+            padding: 14px 16px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            border-bottom: 1px solid rgba(74, 144, 226, 0.08);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .categories::-webkit-scrollbar {
+            height: 0;
+        }
+
+        .categories-content {
+            display: flex;
+            gap: 8px;
+            padding: 0;
+            min-width: min-content;
+        }
+
+        .category-tab {
+            padding: 10px 16px;
+            background: white;
+            border: 1.5px solid #E8EEF8;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            user-select: none;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 20px 16px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            padding: 12px 12px 12px 14px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(74, 144, 226, 0.06);
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-icon {
+            font-size: 42px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(80, 212, 200, 0.1));
+            border-radius: 12px;
+        }
+
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .product-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .product-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        .product-price {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.12), rgba(80, 212, 200, 0.12));
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #4A90E2;
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            margin-top: 4px;
+        }
+
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 8px;
+        }
+
+        .quantity-display {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-primary);
+            min-width: 24px;
+            text-align: center;
+            background: rgba(74, 144, 226, 0.08);
+            padding: 4px 6px;
+            border-radius: 6px;
+        }
+
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.88);
+        }
+
+        .qty-btn.add {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
+
+        .qty-btn.remove {
+            background: #F5F5F5;
+            color: #FF6B6B;
+        }
+
+        /* ============ CART PANEL ============ */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .cart-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-panel.active {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            padding: 20px 16px;
+            border-bottom: 1px solid #E8EEF8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(80, 212, 200, 0.05));
+        }
+
+        .cart-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            background: #F5F7FB;
+            border: 1.5px solid #E0E6F2;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .close-btn:active {
+            background: #E0E6F2;
+            transform: scale(0.9);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(80, 212, 200, 0.05));
+            border-radius: 14px;
+            margin-bottom: 12px;
+            align-items: center;
+            border: 1px solid rgba(74, 144, 226, 0.08);
+        }
+
+        .cart-item-icon {
+            font-size: 36px;
+            flex-shrink: 0;
+        }
+
+        .cart-item-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cart-item-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .cart-item-qty {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .cart-item-remove {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: 1.5px solid #E8EEF8;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FF6B6B;
+            font-size: 18px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            user-select: none;
+            font-weight: 700;
+        }
+
+        .cart-item-remove:active {
+            background: #FF6B6B;
+            color: white;
+            border-color: #FF6B6B;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .cart-empty-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .cart-footer {
+            padding: 20px 16px;
+            border-top: 1.5px solid #E8EEF8;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.02), rgba(80, 212, 200, 0.02));
+        }
+
+        .cart-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1.5px solid #E8EEF8;
+        }
+
+        .cart-summary-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 700;
+        }
+
+        .cart-summary-value {
+            font-size: 20px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #25D366 0%, #20BA5E 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-md);
+            user-select: none;
+        }
+
+        .whatsapp-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ============ FLOATING BUTTONS ============ */
+        .floating-buttons {
+            position: fixed;
+            bottom: 24px;
+            right: 16px;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            color: white;
+            position: relative;
+            user-select: none;
+        }
+
+        .fab.instagram {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .fab.whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #20BA5E 100%);
+        }
+
+        .fab.cart-floating {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E72 100%);
+            width: 60px;
+            height: 60px;
+            font-size: 28px;
+        }
+
+        .fab-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #FF6B6B;
+            color: white;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2.5px solid white;
+        }
+
+        .fab:active {
+            transform: scale(0.88);
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            color: white;
+            padding: 60px 16px 20px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+            padding-left: 4px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(74, 144, 226, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4A90E2;
+        }
+
+        .social-icon:hover {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(74, 144, 226, 0.2);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ============ CAMERA SECTION ============ */
+        .camera-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 16px;
+        }
+
+        .camera-container {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .camera-display {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 24px;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        #cameraVideo {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .watermark {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background: rgba(74, 144, 226, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .camera-btn {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .camera-btn:active {
+            transform: scale(0.96);
+        }
+
+        .camera-btn.primary {
+            background: linear-gradient(135deg, #4A90E2, #50D4C8);
+        }
+
+        .camera-btn.secondary {
+            background: #F5F5F5;
+            color: #FF6B6B;
+            border: 1.5px solid #FF6B6B;
+        }
+
+        .camera-message {
+            min-height: 40px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #25D366;
+            font-weight: 600;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .photo-delete {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(255, 107, 107, 0.9);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-item:hover .photo-delete {
+            opacity: 1;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .memory-game {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                height: 300px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .hero h1 {
+                font-size: 52px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-image {
+                height: 500px;
+            }
+
+            .contact-form {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .products {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+
+            .product-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-lg);
+            }
+
+            .fab:hover {
+                transform: translateY(-4px) scale(1.08);
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER / NAVIGATION -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo" onclick="showPage('home'); return false;">
+                <span class="logo-emoji">☕</span>
+                <span>WEDRINK</span>
+            </a>
+            <ul class="nav-menu">
+                <li><button class="nav-link active" onclick="showPage('home')">Басты</button></li>
+                <li><button class="nav-link" onclick="showPage('menu')">Меню</button></li>
+                <li><button class="nav-link" onclick="showPage('games')">Ойындар</button></li>
+                <li><button class="nav-link" onclick="showPage('camera')">📷 Камера</button></li>
+                <li><button class="nav-link" onclick="showPage('about')">Туралы</button></li>
+                <li><button class="nav-link" onclick="showPage('delivery')">Жеткізу</button></li>
+                <li><button class="nav-link" onclick="showPage('contact')">Байланыс</button></li>
+            </ul>
+            <div class="header-actions">
+                <button class="lang-toggle active" data-lang="kk" onclick="setLanguage('kk')">Қаз</button>
+                <button class="lang-toggle" data-lang="ru" onclick="setLanguage('ru')">Рус</button>
+                <button class="cart-btn" onclick="openCart()">
+                    🛒
+                    <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============ HOME PAGE ============ -->
+    <div class="page active" id="home-page">
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-emoji">☕</div>
+                <h1 id="hero-title">WEDRINK - Қош келдіңіз!</h1>
+                <p id="hero-subtitle">Біз танымдарың үшін өте дәмді кофе мен ішімдіктер ұсынамыз. Жұмсақ әйнек, таза ауа және жылы атмосфера құ құрамасында сізді көргісім келеді.</p>
+                <button class="hero-btn" onclick="showPage('menu')" id="hero-btn">Менюді қараңыз</button>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="features">
+            <h2 class="section-title" id="features-title">Неге WEDRINK?</h2>
+            <p class="section-subtitle" id="features-subtitle">Біз ең жақсы қызмет пен сапаны ұсынамыз</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3 id="feature1-title">Премиум Сапасы</h3>
+                    <p id="feature1-desc">Ең сапалы құрамдас бөлшектер қолдану</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 id="feature2-title">Тез Қызмет</h3>
+                    <p id="feature2-desc">Бесжаста теңге өйтілген, балалы қызмет</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3 id="feature3-title">Ерекше ұсыныстар</h3>
+                    <p id="feature3-desc">Әрбір апта жаңа үзінді ішімдіктер</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 id="feature4-title">Оңай Тапсырыс</h3>
+                    <p id="feature4-desc">Мобильде тапсырыс беру барлық қалай болады</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTS SHOWCASE -->
+        <section class="products-showcase">
+            <div class="menu-container">
+                <h2 class="section-title" id="popular-title">Танымдалған Өнімдер</h2>
+                <div class="products-grid" id="popularProducts"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============ MENU PAGE ============ -->
+    <div class="page" id="menu-page">
+        <div class="categories">
+            <div class="categories-content" id="categoriesContent"></div>
+        </div>
+        <div class="menu-container">
+            <div id="productsContainer"></div>
+        </div>
+    </div>
+
+    <!-- ============ GAMES PAGE ============ -->
+    <div class="page" id="games-page">
+        <section class="games-section">
+            <h2 class="section-title" id="games-title">🎮 Ойындар</h2>
+            <p class="section-subtitle" id="games-subtitle">Ләззат көтерісіңіз! Забавные игры с кофе 😄</p>
+
+            <div class="game-container">
+                <div class="game-info">
+                    <h3 id="memory-title">🎯 Жұпты Табу Ойыны</h3>
+                    <p id="memory-desc">Барлық жұптарды табыңыз! Найди все пары. Жылдамсыңыз! ⏱️</p>
+                </div>
+
+                <div class="game-stats">
+                    <div class="stat">
+                        <div class="stat-label" id="moves-label">Жүрістер</div>
+                        <div class="stat-value" id="movesCount">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label" id="matched-label">Табылды</div>
+                        <div class="stat-value" id="matchedCount">0/8</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label" id="time-label">Уақыт</div>
+                        <div class="stat-value" id="timeCount">0s</div>
+                    </div>
+                </div>
+
+                <div class="memory-game" id="memoryGame"></div>
+
+                <div class="game-buttons">
+                    <button class="game-btn" id="playBtn" onclick="startMemoryGame()">Ойындарды бастау</button>
+                    <button class="game-btn secondary" onclick="resetMemoryGame()">Қайта бастау</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============ CAMERA PAGE ============ -->
+    <div class="page" id="camera-page">
+        <section class="camera-section">
+            <h2 class="section-title" id="camera-title">📷 WEDRINK КАМЕРАСЫ</h2>
+            <p class="section-subtitle" id="camera-subtitle">Өзіңіз пен сіздің түсімді WEDRINK-те түсіңіз! 📸</p>
+
+            <div class="camera-container">
+                <div class="camera-display">
+                    <video id="video" autoplay playsinline></video>
+                </div>
+
+                <div class="camera-controls">
+                    <button class="camera-btn primary" id="startCameraBtn" onclick="startCamera()">
+                        <span id="start-camera-text">📷 Камераны ашу</span>
+                    </button>
+                    <button class="camera-btn secondary" id="closeCameraBtn" onclick="stopCamera()" style="display: none;">
+                        <span id="close-camera-text">❌ Жабу</span>
+                    </button>
+                </div>
+
+                <div id="cameraMessage" class="camera-message"></div>
+            </div>
+        </section>
+    </div>
+    <div class="page" id="about-page">
+        <section class="about-section">
+            <div class="about-grid">
+                <div class="about-image">🏪</div>
+                <div class="about-content">
+                    <h2 id="about-title">Біз туралы</h2>
+                    <p id="about-desc1">WEDRINK - Тараз қаласында ешкімнің кофе мәденiyetін ұсыну құ құрылған әлеуметтік ғана емес, коммерциялық орын. Бізде өте немәселі кофе, шарттаушы чай және өзге ішімдіктер бар.</p>
+                    <p id="about-desc2">Біздің мақсаты - әрбір ашуға дәмді және сапалы өнім ұсыну. Бізде ең жақсы қызмет берілетін команда бар.</p>
+                    <ul class="about-list">
+                        <li id="about-list1">Таза және әдемі интерьер</li>
+                        <li id="about-list2">Сапалы кофе және шай</li>
+                        <li id="about-list3">Ассоци ешегі команда</li>
+                        <li id="about-list4">Жұрын пәтер атмосфера</li>
+                        <li id="about-list5">Салқын және ыстық ішімдіктер</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============ DELIVERY PAGE ============ -->
+    <div class="page" id="delivery-page">
+        <section class="delivery-section">
+            <h2 class="section-title" id="delivery-title">Жеткізу</h2>
+            <p class="section-subtitle" id="delivery-subtitle">Біз Тараз қаласының барлық аймағында жеткізу ұсынамыз</p>
+            <div class="delivery-image">🚗</div>
+            <div class="delivery-grid">
+                <div class="delivery-card">
+                    <h3 id="delivery-opt1">Тез Жеткізу</h3>
+                    <p id="delivery-desc1">30 минут ішінде тапсырысыңыз жеткізіледі. Таза және сыпайы құдықшы.</p>
+                </div>
+                <div class="delivery-card">
+                    <h3 id="delivery-opt2">Іс Жұмыс</h3>
+                    <p id="delivery-desc2">09:00 - 22:00 аралығында ашық. Өте жүй демеу шеңберінде жеткізу қызмет.</p>
+                </div>
+                <div class="delivery-card">
+                    <h3 id="delivery-opt3">Тұрақты Бағалар</h3>
+                    <p id="delivery-desc3">Барлық бағалар уақтында өзгермейді. Вызыв және онлайндағы үйлестіру арқылы тапсырыс беріңіз.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============ CONTACT PAGE ============ -->
+    <div class="page" id="contact-page">
+        <section class="contact-section">
+            <h2 class="section-title" id="contact-title">Байланыс</h2>
+            <p class="section-subtitle" id="contact-subtitle">Бізге хабарлама жіберіңіз немесе төмөндегі мәліметтерін пайдалан</p>
+            
+            <div class="contact-info">
+                <div class="contact-card">
+                    <div class="contact-icon">📍</div>
+                    <h3 id="contact-addr-title">Адрес</h3>
+                    <p id="contact-addr">Тараз қаласы, Абайлық көшесі, 42</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">📱</div>
+                    <h3 id="contact-whatsapp-title">WhatsApp</h3>
+                    <p id="contact-whatsapp"><a href="https://wa.me/87783772352" style="color: inherit; text-decoration: none;">+7 (778) 377-23-52</a></p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">✉️</div>
+                    <h3 id="contact-email-title">Электрондық пошта</h3>
+                    <p id="contact-email">info@wedrink.kz</p>
+                </div>
+            </div>
+
+            <div class="instagram-section">
+                <a href="https://instagram.com/wedrink.kz" target="_blank" class="instagram-link">
+                    <div class="instagram-logo">📷</div>
+                    <h3 id="instagram-text">WEDRINK-ті Instagram-та іздеңіз</h3>
+                    <p id="instagram-follow">@wedrink.kz</p>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- CART PANEL -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <div class="cart-title" id="cart-title">Сіздің тапсырысыңыз</div>
+            <button class="close-btn" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer"></div>
+        <div class="cart-footer">
+            <div class="cart-summary">
+                <span class="cart-summary-label" id="total-label">Барлығы</span>
+                <span class="cart-summary-value" id="cartTotal">0₸</span>
+            </div>
+            <button class="whatsapp-btn" id="whatsappBtn" onclick="generateWhatsappMessage()">
+                <span>💬</span>
+                <span id="whatsapp-btn-text">WhatsApp арқылы тапсыру</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- FLOATING BUTTONS -->
+    <div class="floating-buttons">
+        <button class="fab instagram" onclick="showPage('camera')" title="Camera">📷</button>
+        <button class="fab cart-floating" onclick="openCart()">
+            🛒
+            <span class="fab-badge" id="cartFloatingBadge" style="display: none;">0</span>
+        </button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">☕ WEDRINK</div>
+                <p class="footer-desc" id="footer-desc">Тараз қаласында өте дәмді кофе мен ішімдіктер ұсынамыз.</p>
+                <div class="social-icons">
+                    <a href="https://instagram.com/wedrink.kz" class="social-icon" target="_blank">📷</a>
+                    <a href="https://facebook.com" class="social-icon" target="_blank">f</a>
+                    <a href="https://wa.me/87783772352" class="social-icon" target="_blank">💬</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3 id="footer-menu">МЕНЮ</h3>
+                <ul>
+                    <li><a href="#" onclick="showPage('menu'); return false;" id="footer-menu-link">Барлық ішімдіктер</a></li>
+                    <li><a href="#" id="footer-coffee-link">Кофе</a></li>
+                    <li><a href="#" id="footer-tea-link">Шәй</a></li>
+                    <li><a href="#" id="footer-milkshake-link">Милкшейк</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 id="footer-company">КОМПАНИЯ</h3>
+                <ul>
+                    <li><a href="#" onclick="showPage('about'); return false;" id="footer-about-link">Туралы</a></li>
+                    <li><a href="#" onclick="showPage('delivery'); return false;" id="footer-delivery-link">Жеткізу</a></li>
+                    <li><a href="#" id="footer-blog-link">Блог</a></li>
+                    <li><a href="#" id="footer-careers-link">Карьера</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 id="footer-contact">БАЙЛАНЫС</h3>
+                <ul>
+                    <li><a href="https://wa.me/87783772352" id="footer-whatsapp">+7 (778) 377-23-52 (WhatsApp)</a></li>
+                    <li><a href="mailto:info@wedrink.kz" id="footer-email">info@wedrink.kz</a></li>
+                    <li><a href="#" id="footer-address">Абайлық К., 42</a></li>
+                    <li><a href="#" onclick="showPage('contact'); return false;" id="footer-contact-form">Байланыс форма</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom" id="footer-bottom">
+            © 2024 WEDRINK Taraz. Барлық құқықтар қорғалған.
+        </div>
+    </footer>
+
+    <script>
+        // ============ MEMORY GAME STATE ============
+        let gameEmojis = ['☕', '🧋', '🍵', '🥤', '🍦', '🍰', '🍪', '🥐'];
+        let gameCards = [];
+        let flipped = [];
+        let matched = [];
+        let moves = 0;
+        let gameStarted = false;
+        let gameTime = 0;
+        let gameTimer = null;
+
+        function initMemoryGame() {
+            gameCards = [...gameEmojis, ...gameEmojis];
+            gameCards = gameCards.sort(() => Math.random() - 0.5);
+            renderMemoryCards();
+        }
+
+        function renderMemoryCards() {
+            const gameBoard = document.getElementById('memoryGame');
+            gameBoard.innerHTML = gameCards.map((emoji, idx) => `
+                <button class="memory-card ${matched.includes(idx) ? 'matched' : ''} ${flipped.includes(idx) ? 'flipped' : ''}" 
+                        onclick="flipCard(${idx})">
+                    ${flipped.includes(idx) || matched.includes(idx) ? emoji : '?'}
+                </button>
+            `).join('');
+        }
+
+        function flipCard(idx) {
+            if (!gameStarted || flipped.includes(idx) || matched.includes(idx) || flipped.length >= 2) return;
+            
+            flipped.push(idx);
+            moves++;
+            renderMemoryCards();
+
+            if (flipped.length === 2) {
+                setTimeout(checkMatch, 500);
+            }
+
+            document.getElementById('movesCount').textContent = moves;
+        }
+
+        function checkMatch() {
+            const [idx1, idx2] = flipped;
+            if (gameCards[idx1] === gameCards[idx2]) {
+                matched.push(idx1, idx2);
+                if (matched.length === gameCards.length) {
+                    endMemoryGame();
+                }
+            }
+            flipped = [];
+            renderMemoryCards();
+        }
+
+        function startMemoryGame() {
+            gameStarted = true;
+            moves = 0;
+            flipped = [];
+            matched = [];
+            gameTime = 0;
+            document.getElementById('memoryGame').style.pointerEvents = 'auto';
+            document.getElementById('playBtn').textContent = currentLang === 'kk' ? 'Ойын ойынында...' : 'Игра идёт...';
+            document.getElementById('playBtn').disabled = true;
+            
+            if (gameTimer) clearInterval(gameTimer);
+            gameTimer = setInterval(() => {
+                gameTime++;
+                document.getElementById('timeCount').textContent = gameTime + 's';
+            }, 1000);
+
+            renderMemoryCards();
+        }
+
+        function resetMemoryGame() {
+            gameStarted = false;
+            moves = 0;
+            flipped = [];
+            matched = [];
+            gameTime = 0;
+            if (gameTimer) clearInterval(gameTimer);
+            document.getElementById('movesCount').textContent = '0';
+            document.getElementById('matchedCount').textContent = '0/8';
+            document.getElementById('timeCount').textContent = '0s';
+            document.getElementById('playBtn').textContent = currentLang === 'kk' ? 'Ойындарды бастау' : 'Начать игру';
+            document.getElementById('playBtn').disabled = false;
+            initMemoryGame();
+        }
+
+        function endMemoryGame() {
+            gameStarted = false;
+            clearInterval(gameTimer);
+            document.getElementById('playBtn').textContent = currentLang === 'kk' ? '✅ Жеңіп аттыңыз!' : '✅ Вы выиграли!';
+        }
+
+        // ============ MENU DATA ============
+        const menuData = {
+            kk: {
+                categories: [
+                    { id: 'coffee', name: '☕ Кофе' },
+                    { id: 'milk_tea', name: '🧋 Сүтті Шәй' },
+                    { id: 'ice_cream', name: '🍦 Балмұздақ' },
+                    { id: 'waffles', name: '🧇 Вафли' },
+                    { id: 'fruit_drinks', name: '🍋 Жемістік ішімдіктер' },
+                    { id: 'milkshakes', name: '🥤 Милкшейк' }
+                ],
+                products: [
+                    { id: 1, category: 'coffee', name: 'Латте Ыстық', desc: 'Сүтті кофе', price: 600, icon: '☕' },
+                    { id: 2, category: 'coffee', name: 'Айс Латте Суық', desc: 'Салқын кофе', price: 700, icon: '🥤' },
+                    { id: 3, category: 'coffee', name: 'Капучино Ыстық', desc: 'Көбікті кофе', price: 600, icon: '☕' },
+                    { id: 4, category: 'coffee', name: 'Айс Капучино Суық', desc: 'Салқын капучино', price: 700, icon: '🥤' },
+                    { id: 5, category: 'coffee', name: 'Классикалық американо', desc: 'Қара кофе', price: 700, icon: '☕' },
+                    { id: 6, category: 'coffee', name: 'Апельсинді американо Суық', desc: 'Апельсин қосылған кофе', price: 900, icon: '🍊' },
+                    { id: 7, category: 'coffee', name: 'Жүзімді американо Суық', desc: 'Жүзім қосылған кофе', price: 900, icon: '🍇' },
+                    { id: 8, category: 'coffee', name: 'Латте кокос сүттімен', desc: 'Кокос дәмі', price: 1200, icon: '🥥' },
+                    { id: 9, category: 'milk_tea', name: 'Қара қантты тапиока шәй', desc: '', price: 900, icon: '🧋' },
+                    { id: 10, category: 'milk_tea', name: 'Кокос сүт шәй', desc: '', price: 900, icon: '🥥' },
+                    { id: 11, category: 'milk_tea', name: 'Шабдалы сүт шәй', desc: '', price: 800, icon: '🍑' },
+                    { id: 12, category: 'milk_tea', name: 'Классикалық сүт шәй', desc: '', price: 800, icon: '🍵' },
+                    { id: 13, category: 'milk_tea', name: 'Қос дәмді сүт шәй', desc: '', price: 900, icon: '🍵' },
+                    { id: 14, category: 'milk_tea', name: 'Тон тон сүт патшасы', desc: '', price: 1200, icon: '👑' },
+                    { id: 15, category: 'milk_tea', name: 'Орео сүтті шайы', desc: '', price: 900, icon: '🍪' },
+                    { id: 16, category: 'milk_tea', name: 'Шоколад-кокос шайы', desc: '', price: 900, icon: '🍫' },
+                    { id: 17, category: 'milk_tea', name: 'Құлпынай-кокос шайы', desc: '', price: 900, icon: '🍓' },
+                    { id: 18, category: 'milk_tea', name: 'Сүтті-Трио', desc: '', price: 750, icon: '🍵' },
+                    { id: 19, category: 'ice_cream', name: 'Қытырлақ балмұздақ', desc: '', price: 300, icon: '🍦' },
+                    { id: 20, category: 'ice_cream', name: 'Қызыл бұршақ матча сандэ', desc: '', price: 650, icon: '🍵' },
+                    { id: 21, category: 'ice_cream', name: 'Шоколадты сандэ', desc: '', price: 650, icon: '🍫' },
+                    { id: 22, category: 'ice_cream', name: 'Құлпынай сандэ', desc: '', price: 650, icon: '🍓' },
+                    { id: 23, category: 'ice_cream', name: 'Көкжидек сандэ', desc: '', price: 650, icon: '🫐' },
+                    { id: 24, category: 'ice_cream', name: 'Шабдалы сандэ', desc: '', price: 650, icon: '🍑' },
+                    { id: 25, category: 'ice_cream', name: 'Сандэ про макс', desc: '', price: 650, icon: '⭐' },
+                    { id: 26, category: 'waffles', name: 'Классикалық вафли', desc: '', price: 700, icon: '🧇' },
+                    { id: 27, category: 'waffles', name: 'Шоколадты вафли', desc: '', price: 700, icon: '🍫' },
+                    { id: 28, category: 'waffles', name: 'Вафли балмұздағы', desc: '', price: 1000, icon: '🍦' },
+                    { id: 29, category: 'fruit_drinks', name: 'Мұздай лимонад', desc: '', price: 400, icon: '🍋' },
+                    { id: 30, category: 'fruit_drinks', name: 'Жүзім-лимон шәй', desc: '', price: 800, icon: '🍇' },
+                    { id: 31, category: 'fruit_drinks', name: 'Апельсин шырыны', desc: '', price: 1200, icon: '🍊' },
+                    { id: 32, category: 'fruit_drinks', name: 'Манго-грейпфрут коктейль', desc: '', price: 800, icon: '🥭' },
+                    { id: 33, category: 'milkshakes', name: 'Құлпынай милкшейк', desc: '', price: 650, icon: '🍓' },
+                    { id: 34, category: 'milkshakes', name: 'Матча милкшейк', desc: '', price: 650, icon: '🍵' },
+                    { id: 35, category: 'milkshakes', name: 'Боба милкшейк', desc: '', price: 650, icon: '🧋' }
+                ]
+            },
+            ru: {
+                categories: [
+                    { id: 'coffee', name: '☕ Кофе' },
+                    { id: 'milk_tea', name: '🧋 Молочный чай' },
+                    { id: 'ice_cream', name: '🍦 Мороженое' },
+                    { id: 'waffles', name: '🧇 Вафли' },
+                    { id: 'fruit_drinks', name: '🍋 Фруктовые напитки' },
+                    { id: 'milkshakes', name: '🥤 Коктейль' }
+                ],
+                products: [
+                    { id: 1, category: 'coffee', name: 'Латте Горячий', desc: 'Молочный кофе', price: 600, icon: '☕' },
+                    { id: 2, category: 'coffee', name: 'Айс Латте Холодный', desc: 'Холодный кофе', price: 700, icon: '🥤' },
+                    { id: 3, category: 'coffee', name: 'Капучино Горячий', desc: 'Кофе с пеной', price: 600, icon: '☕' },
+                    { id: 4, category: 'coffee', name: 'Айс Капучино Холодный', desc: 'Холодный капучино', price: 700, icon: '🥤' },
+                    { id: 5, category: 'coffee', name: 'Классический американо', desc: 'Черный кофе', price: 700, icon: '☕' },
+                    { id: 6, category: 'coffee', name: 'Апельсиновый американо Холодный', desc: 'Кофе с апельсином', price: 900, icon: '🍊' },
+                    { id: 7, category: 'coffee', name: 'Виноградный американо Холодный', desc: 'Кофе с виноградом', price: 900, icon: '🍇' },
+                    { id: 8, category: 'coffee', name: 'Латте с кокосовым молоком', desc: 'Вкус кокоса', price: 1200, icon: '🥥' },
+                    { id: 9, category: 'milk_tea', name: 'Черный чай с молоком и тапиока', desc: '', price: 900, icon: '🧋' },
+                    { id: 10, category: 'milk_tea', name: 'Молочный чай с кокосом', desc: '', price: 900, icon: '🥥' },
+                    { id: 11, category: 'milk_tea', name: 'Молочный чай с персиком', desc: '', price: 800, icon: '🍑' },
+                    { id: 12, category: 'milk_tea', name: 'Классический молочный чай', desc: '', price: 800, icon: '🍵' },
+                    { id: 13, category: 'milk_tea', name: 'Молочный чай двойной вкус', desc: '', price: 900, icon: '🍵' },
+                    { id: 14, category: 'milk_tea', name: 'Тон тон молочный король', desc: '', price: 1200, icon: '👑' },
+                    { id: 15, category: 'milk_tea', name: 'Молочный чай Орео', desc: '', price: 900, icon: '🍪' },
+                    { id: 16, category: 'milk_tea', name: 'Молочный чай шоколад-кокос', desc: '', price: 900, icon: '🍫' },
+                    { id: 17, category: 'milk_tea', name: 'Молочный чай клубника-кокос', desc: '', price: 900, icon: '🍓' },
+                    { id: 18, category: 'milk_tea', name: 'Молочный чай Трио', desc: '', price: 750, icon: '🍵' },
+                    { id: 19, category: 'ice_cream', name: 'Хрустящее мороженое', desc: '', price: 300, icon: '🍦' },
+                    { id: 20, category: 'ice_cream', name: 'Красная фасоль матча сандэ', desc: '', price: 650, icon: '🍵' },
+                    { id: 21, category: 'ice_cream', name: 'Шоколадный сандэ', desc: '', price: 650, icon: '🍫' },
+                    { id: 22, category: 'ice_cream', name: 'Клубничный сандэ', desc: '', price: 650, icon: '🍓' },
+                    { id: 23, category: 'ice_cream', name: 'Черничный сандэ', desc: '', price: 650, icon: '🫐' },
+                    { id: 24, category: 'ice_cream', name: 'Персиковый сандэ', desc: '', price: 650, icon: '🍑' },
+                    { id: 25, category: 'ice_cream', name: 'Сандэ про макс', desc: '', price: 650, icon: '⭐' },
+                    { id: 26, category: 'waffles', name: 'Классические вафли', desc: '', price: 700, icon: '🧇' },
+                    { id: 27, category: 'waffles', name: 'Шоколадные вафли', desc: '', price: 700, icon: '🍫' },
+                    { id: 28, category: 'waffles', name: 'Вафли с мороженым', desc: '', price: 1000, icon: '🍦' },
+                    { id: 29, category: 'fruit_drinks', name: 'Холодный лимонад', desc: '', price: 400, icon: '🍋' },
+                    { id: 30, category: 'fruit_drinks', name: 'Виноградно-лимонный чай', desc: '', price: 800, icon: '🍇' },
+                    { id: 31, category: 'fruit_drinks', name: 'Апельсиновый сок', desc: '', price: 1200, icon: '🍊' },
+                    { id: 32, category: 'fruit_drinks', name: 'Манго-грейпфрутовый коктейль', desc: '', price: 800, icon: '🥭' },
+                    { id: 33, category: 'milkshakes', name: 'Клубничный коктейль', desc: '', price: 650, icon: '🍓' },
+                    { id: 34, category: 'milkshakes', name: 'Матча коктейль', desc: '', price: 650, icon: '🍵' },
+                    { id: 35, category: 'milkshakes', name: 'Боба коктейль', desc: '', price: 650, icon: '🧋' }
+                ]
+            }
+        };
+
+        // ============ STATE ============
+        let currentLang = 'kk';
+        let currentCategory = 'coffee';
+        let cart = {};
+
+        // ============ PAGE NAVIGATION ============
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageName + '-page').classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                const btnText = link.textContent.trim();
+                if (pageName === 'home' && btnText === 'Басты') link.classList.add('active');
+                else if (pageName === 'menu' && btnText === 'Меню') link.classList.add('active');
+                else if (pageName === 'games' && btnText === 'Ойындар') link.classList.add('active');
+                else if (pageName === 'about' && btnText === 'Туралы') link.classList.add('active');
+                else if (pageName === 'delivery' && btnText === 'Жеткізу') link.classList.add('active');
+                else if (pageName === 'contact' && btnText === 'Байланыс') link.classList.add('active');
+            });
+
+            window.scrollTo(0, 0);
+
+            if (pageName === 'games' && gameCards.length === 0) {
+                initMemoryGame();
+            }
+        }
+
+        // ============ LANGUAGE ============
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-toggle').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            updateTexts();
+            renderCategories();
+            renderProducts();
+            renderPopularProducts();
+            updateCartUI();
+        }
+
+        function updateTexts() {
+            const texts = {
+                kk: {
+                    'hero-title': 'WEDRINK - Қош келдіңіз!',
+                    'hero-subtitle': 'Біз танымдарың үшін өте дәмді кофе мен ішімдіктер ұсынамыз. Жұмсақ әйнек, таза ауа және жылы атмосфера құ құрамасында сізді көргісім келеді.',
+                    'hero-btn': 'Менюді қараңыз',
+                    'features-title': 'Неге WEDRINK?',
+                    'features-subtitle': 'Біз ең жақсы қызмет пен сапаны ұсынамыз',
+                    'feature1-title': 'Премиум Сапасы',
+                    'feature1-desc': 'Ең сапалы құрамдас бөлшектер қолдану',
+                    'feature2-title': 'Тез Қызмет',
+                    'feature2-desc': 'Бесжаста теңге өйтілген, балалы қызмет',
+                    'feature3-title': 'Ерекше ұсыныстар',
+                    'feature3-desc': 'Әрбір апта жаңа үзінді ішімдіктер',
+                    'feature4-title': 'Оңай Тапсырыс',
+                    'feature4-desc': 'Мобильде тапсырыс беру барлық қалай болады',
+                    'popular-title': 'Танымдалған Өнімдер',
+                    'games-title': '🎮 Ойындар',
+                    'games-subtitle': 'Ләззат көтерісіңіз! Забавные игры с кофе 😄',
+                    'memory-title': '🎯 Жұпты Табу Ойыны',
+                    'memory-desc': 'Барлық жұптарды табыңыз! Найди все пары. Жылдамсыңыз! ⏱️',
+                    'moves-label': 'Жүрістер',
+                    'matched-label': 'Табылды',
+                    'time-label': 'Уақыт',
+                    'playBtn': 'Ойындарды бастау',
+                    'about-title': 'Біз туралы',
+                    'about-desc1': 'WEDRINK - Тараз қаласында ешкімнің кофе мәденiyetін ұсыну құ құрылған әлеуметтік ғана емес, коммерциялық орын. Бізде өте немәселі кофе, шарттаушы чай және өзге ішімдіктер бар.',
+                    'about-desc2': 'Біздің мақсаты - әрбір ашуға дәмді және сапалы өнім ұсыну. Бізде ең жақсы қызмет берілетін команда бар.',
+                    'about-list1': 'Таза және әдемі интерьер',
+                    'about-list2': 'Сапалы кофе және шай',
+                    'about-list3': 'Ассоци ешегі команда',
+                    'about-list4': 'Жұрын пәтер атмосфера',
+                    'about-list5': 'Салқын және ыстық ішімдіктер',
+                    'delivery-title': 'Жеткізу',
+                    'delivery-subtitle': 'Біз Тараз қаласының барлық аймағында жеткізу ұсынамыз',
+                    'delivery-opt1': 'Тез Жеткізу',
+                    'delivery-desc1': '30 минут ішінде тапсырысыңыз жеткізіледі. Таза және сыпайы құдықшы.',
+                    'delivery-opt2': 'Іс Жұмыс',
+                    'delivery-desc2': '09:00 - 22:00 аралығында ашық. Өте жүй демеу шеңберінде жеткізу қызмет.',
+                    'delivery-opt3': 'Тұрақты Бағалар',
+                    'delivery-desc3': 'Барлық бағалар уақтында өзгермейді. Вызыв және онлайндағы үйлестіру арқылы тапсырыс беріңіз.',
+                    'contact-title': 'Байланыс',
+                    'contact-subtitle': 'WEDRINK-ті сұрау үшін Instagram-та бізді тап',
+                    'contact-addr-title': 'Адрес',
+                    'contact-addr': 'Тараз қаласы, Абайлық көшесі, 42',
+                    'contact-whatsapp-title': 'WhatsApp',
+                    'contact-whatsapp': '+7 (778) 377-23-52',
+                    'instagram-text': 'WEDRINK-ті Instagram-та іздеңіз',
+                    'instagram-follow': '@wedrink.kz',
+                    'cart-title': 'Сіздің тапсырысыңыз',
+                    'total-label': 'Барлығы',
+                    'whatsapp-btn-text': 'WhatsApp арқылы тапсыру',
+                    'footer-desc': 'Тараз қаласында өте дәмті кофе мен ішімдіктер ұсынамыз.',
+                    'footer-menu': 'МЕНЮ',
+                    'footer-company': 'КОМПАНИЯ',
+                    'footer-contact': 'БАЙЛАНЫС',
+                    'footer-bottom': '© 2024 WEDRINK Taraz. Барлық құқықтар қорғалған.',
+                    'camera-title': '📷 WEDRINK КАМЕРАСЫ',
+                    'camera-subtitle': 'Өзіңіз пен сіздің түсімді WEDRINK-те түсіңіз! 📸',
+                    'start-camera-text': '📷 Камераны ашу',
+                    'close-camera-text': '❌ Жабу'
+                },
+                ru: {
+                    'hero-title': 'WEDRINK - Добро пожаловать!',
+                    'hero-subtitle': 'Мы предлагаем вкусный кофе и напитки для вас. Мягкий свет, чистый воздух и теплая атмосфера в одном месте.',
+                    'hero-btn': 'Посмотреть меню',
+                    'features-title': 'Почему WEDRINK?',
+                    'features-subtitle': 'Мы предлагаем лучший сервис и качество',
+                    'feature1-title': 'Премиум качество',
+                    'feature1-desc': 'Используем только лучшие ингредиенты',
+                    'feature2-title': 'Быстрый сервис',
+                    'feature2-desc': 'Быстрое и вежливое обслуживание',
+                    'feature3-title': 'Специальные предложения',
+                    'feature3-desc': 'Новые напитки каждую неделю',
+                    'feature4-title': 'Легкий заказ',
+                    'feature4-desc': 'Заказ на мобильном как никогда простой',
+                    'popular-title': 'Популярные товары',
+                    'games-title': '🎮 Игры',
+                    'games-subtitle': 'Развлекайтесь! Забавные игры с кофе 😄',
+                    'memory-title': '🎯 Найди пару',
+                    'memory-desc': 'Найди все пары! Find all pairs. Поторопись! ⏱️',
+                    'moves-label': 'Ходы',
+                    'matched-label': 'Найдено',
+                    'time-label': 'Время',
+                    'playBtn': 'Начать игру',
+                    'about-title': 'О нас',
+                    'about-desc1': 'WEDRINK - кофейня в городе Тараз, где мы предлагаем культуру кофе. У нас есть вкусный кофе, чай и другие напитки.',
+                    'about-desc2': 'Наша цель - предоставить вкусный и качественный продукт каждому клиенту. У нас работает дружелюбная команда.',
+                    'about-list1': 'Чистый и красивый интерьер',
+                    'about-list2': 'Качественный кофе и чай',
+                    'about-list3': 'Дружелюбная команда',
+                    'about-list4': 'Уютная атмосфера',
+                    'about-list5': 'Горячие и холодные напитки',
+                    'delivery-title': 'Доставка',
+                    'delivery-subtitle': 'Мы доставляем во все районы города Тараз',
+                    'delivery-opt1': 'Быстрая доставка',
+                    'delivery-desc1': 'Ваш заказ будет доставлен в течение 30 минут. Чистая и вежливая доставка.',
+                    'delivery-opt2': 'Часы работы',
+                    'delivery-desc2': 'Открыто с 09:00 до 22:00. Быстрый и надежный сервис доставки.',
+                    'delivery-opt3': 'Фиксированные цены',
+                    'delivery-desc3': 'Цены не меняются со временем. Заказывайте через звонок и онлайн.',
+                    'contact-title': 'Контакты',
+                    'contact-subtitle': 'Найди WEDRINK в Instagram для вопросов и предложений',
+                    'contact-addr-title': 'Адрес',
+                    'contact-addr': 'Город Тараз, улица Абайлык, 42',
+                    'contact-whatsapp-title': 'WhatsApp',
+                    'contact-whatsapp': '+7 (778) 377-23-52',
+                    'instagram-text': 'Найдите WEDRINK в Instagram',
+                    'instagram-follow': '@wedrink.kz',
+                    'cart-title': 'Ваш заказ',
+                    'total-label': 'Итого',
+                    'whatsapp-btn-text': 'Заказать в WhatsApp',
+                    'footer-desc': 'Мы предлагаем вкусный кофе и напитки в городе Тараз.',
+                    'footer-menu': 'МЕНЮ',
+                    'footer-company': 'КОМПАНИЯ',
+                    'footer-contact': 'КОНТАКТЫ',
+                    'footer-bottom': '© 2024 WEDRINK Taraz. Все права защищены.',
+                    'camera-title': '📷 WEDRINK КАМЕРА',
+                    'camera-subtitle': 'Сфотографируйтесь со своим напитком WEDRINK! 📸',
+                    'start-camera-text': '📷 Открыть камеру',
+                    'close-camera-text': '❌ Закрыть'
+                }
+            };
+
+            Object.entries(texts[currentLang]).forEach(([id, text]) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            });
+        }
+
+        // ============ RENDER CATEGORIES ============
+        function renderCategories() {
+            const categories = menuData[currentLang].categories;
+            document.getElementById('categoriesContent').innerHTML = categories.map(cat => `
+                <button class="category-tab ${cat.id === currentCategory ? 'active' : ''}" data-category="${cat.id}" onclick="selectCategory('${cat.id}')">
+                    ${cat.name}
+                </button>
+            `).join('');
+        }
+
+        function selectCategory(catId) {
+            currentCategory = catId;
+            renderCategories();
+            renderProducts();
+        }
+
+        // ============ RENDER PRODUCTS ============
+        function renderProducts() {
+            const products = menuData[currentLang].products.filter(p => p.category === currentCategory);
+            const html = products.map(product => {
+                const cartItem = cart[product.id] || { qty: 0 };
+                return `
+                    <div class="product-card">
+                        <div class="product-icon">${product.icon}</div>
+                        <div class="product-info">
+                            <div class="product-name">${product.name}</div>
+                            ${product.desc ? `<div class="product-desc">${product.desc}</div>` : ''}
+                            <div class="product-price">${product.price}₸</div>
+                        </div>
+                        <div class="product-actions">
+                            ${cartItem.qty > 0 ? `
+                                <button class="qty-btn remove" onclick="updateQty(${product.id}, 'remove')">−</button>
+                                <div class="quantity-display">${cartItem.qty}</div>
+                            ` : ''}
+                            <button class="qty-btn add" onclick="updateQty(${product.id}, 'add')">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('productsContainer').innerHTML = html;
+        }
+
+        // ============ RENDER POPULAR PRODUCTS ============
+        function renderPopularProducts() {
+            const popular = [1, 8, 14, 26, 31, 33];
+            const html = popular.map(id => {
+                const product = menuData[currentLang].products.find(p => p.id === id);
+                return `
+                    <div class="product-item">
+                        <div class="product-emoji">${product.icon}</div>
+                        <h4>${product.name}</h4>
+                        <p>${product.price}₸</p>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('popularProducts').innerHTML = html;
+        }
+
+        // ============ CART FUNCTIONS ============
+        function updateQty(productId, action) {
+            const product = menuData[currentLang].products.find(p => p.id === productId);
+            if (!cart[productId]) {
+                cart[productId] = { qty: 0, product };
+            }
+            
+            if (action === 'add') {
+                cart[productId].qty++;
+            } else {
+                cart[productId].qty--;
+                if (cart[productId].qty === 0) delete cart[productId];
+            }
+            renderProducts();
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = Object.values(cart).reduce((sum, item) => sum + (item.product.price * item.qty), 0);
+
+            if (totalItems > 0) {
+                document.getElementById('cartBadge').textContent = totalItems;
+                document.getElementById('cartBadge').style.display = 'flex';
+                document.getElementById('cartFloatingBadge').textContent = totalItems;
+                document.getElementById('cartFloatingBadge').style.display = 'flex';
+            } else {
+                document.getElementById('cartBadge').style.display = 'none';
+                document.getElementById('cartFloatingBadge').style.display = 'none';
+            }
+
+            document.getElementById('cartTotal').textContent = `${totalPrice}₸`;
+            renderCartItems();
+        }
+
+        function renderCartItems() {
+            if (Object.keys(cart).length === 0) {
+                document.getElementById('cartItemsContainer').innerHTML = `
+                    <div class="cart-empty">
+                        <div class="cart-empty-icon">🛒</div>
+                        <div>${currentLang === 'kk' ? 'Сіздің себетіңіз бос' : 'Ваша корзина пуста'}</div>
+                    </div>
+                `;
+                return;
+            }
+
+            document.getElementById('cartItemsContainer').innerHTML = Object.entries(cart).map(([id, item]) => {
+                const itemTotal = item.product.price * item.qty;
+                return `
+                    <div class="cart-item">
+                        <div class="cart-item-icon">${item.product.icon}</div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.product.name}</div>
+                            <div class="cart-item-qty">×${item.qty} × ${item.product.price}₸ = ${itemTotal}₸</div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeCartItem(${id})">✕</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function removeCartItem(productId) {
+            delete cart[productId];
+            renderProducts();
+            updateCartUI();
+        }
+
+        function openCart() {
+            document.getElementById('cartOverlay').classList.add('active');
+            document.getElementById('cartPanel').classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cartOverlay').classList.remove('active');
+            document.getElementById('cartPanel').classList.remove('active');
+        }
+
+        // ============ WHATSAPP ============
+        function generateWhatsappMessage() {
+            if (Object.keys(cart).length === 0) {
+                alert(currentLang === 'kk' ? 'Сіздің себетіңіз бос' : 'Ваша корзина пуста');
+                return;
+            }
+
+            const isKazakh = currentLang === 'kk';
+            const now = new Date();
+            const dateStr = now.toLocaleDateString(isKazakh ? 'kk-KZ' : 'ru-RU');
+            const timeStr = now.toLocaleTimeString(isKazakh ? 'kk-KZ' : 'ru-RU');
+
+            let message = isKazakh 
+                ? `🛍️ *Жаңа тапсырыс* 🕒 ${dateStr} ${timeStr}\n\n`
+                : `🛍️ *Новый заказ* 🕒 ${dateStr} ${timeStr}\n\n`;
+
+            let total = 0;
+            Object.values(cart).forEach(item => {
+                const subtotal = item.product.price * item.qty;
+                total += subtotal;
+                message += `${item.product.icon} ${item.product.name}\n`;
+                message += `   ×${item.qty} × ${item.product.price}₸ = ${subtotal}₸\n\n`;
+            });
+
+            message += `━━━━━━━━━━━━━━━━━\n`;
+            message += isKazakh 
+                ? `*Жалпы сома: ${total}₸*\n\n📌 Клиенттің тапсырысы WEDRINK сайтынан келді`
+                : `*Итого: ${total}₸*\n\n📌 Заказ клиента пришел с сайта WEDRINK`;
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // ============ CAMERA FUNCTIONS ============
+        let cameraStream = null;
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                });
+                
+                cameraStream = stream;
+                document.getElementById('video').srcObject = stream;
+                document.getElementById('startCameraBtn').style.display = 'none';
+                document.getElementById('closeCameraBtn').style.display = 'inline-flex';
+                showCameraMessage(currentLang === 'kk' ? '✅ Камера ашылды!' : '✅ Камера открыта!');
+            } catch (error) {
+                let errorMsg = '';
+                
+                if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                    errorMsg = currentLang === 'kk' ? '❌ Рұқсат беілген жоқ!\nПараметрлерден рұқсат беру керек.' : '❌ Доступ запрещен!\nРазрешите доступ в настройках.';
+                } else if (error.name === 'NotFoundError' || error.name === 'DevicesNotFoundError') {
+                    errorMsg = currentLang === 'kk' ? '❌ Камера табылмады!\nКамера қосулы ма?' : '❌ Камера не найдена!\nПроверьте подключение.';
+                } else if (error.name === 'NotReadableError') {
+                    errorMsg = currentLang === 'kk' ? '❌ Камера басқа приложениеде ашық!\nОны жабу керек.' : '❌ Камера занята другим приложением!\nЗакройте его.';
+                } else if (error.name === 'SecurityError') {
+                    errorMsg = currentLang === 'kk' ? '❌ HTTPS қажет!\nHTTP-де қолдау жоқ.' : '❌ Требуется HTTPS!\nHTTP не поддерживается.';
+                } else {
+                    errorMsg = currentLang === 'kk' ? `❌ Қате: ${error.name}` : `❌ Ошибка: ${error.name}`;
+                }
+                
+                showCameraMessage(errorMsg);
+                console.error('Camera error:', error);
+            }
+        }
+
+        function stopCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            document.getElementById('startCameraBtn').style.display = 'inline-flex';
+            document.getElementById('closeCameraBtn').style.display = 'none';
+            document.getElementById('video').srcObject = null;
+            showCameraMessage('');
+        }
+
+        function showCameraMessage(msg) {
+            const msgEl = document.getElementById('cameraMessage');
+            if (msgEl) {
+                msgEl.textContent = msg;
+            }
+        }
+
+        // ============ INIT ============
+        window.addEventListener('load', () => {
+            setLanguage('kk');
+        });
+    </script>
+</body>
+</html>
