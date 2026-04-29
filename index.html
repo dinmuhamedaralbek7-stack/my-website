@@ -2286,11 +2286,8 @@
             if (totalItems > 0) {
                 document.getElementById('cartBadge').textContent = totalItems;
                 document.getElementById('cartBadge').style.display = 'flex';
-                document.getElementById('cartFloatingBadge').textContent = totalItems;
-                document.getElementById('cartFloatingBadge').style.display = 'flex';
             } else {
                 document.getElementById('cartBadge').style.display = 'none';
-                document.getElementById('cartFloatingBadge').style.display = 'none';
             }
 
             document.getElementById('cartTotal').textContent = `${totalPrice}₸`;
@@ -2330,6 +2327,7 @@
         }
 
         function openCart() {
+            renderCartItems();
             document.getElementById('cartOverlay').classList.add('active');
             document.getElementById('cartPanel').classList.add('active');
         }
